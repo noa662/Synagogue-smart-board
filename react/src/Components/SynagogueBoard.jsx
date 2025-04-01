@@ -22,7 +22,7 @@ const SynagogueBoard = () => {
 
   return (
     <div>
-      <h1>Synagogue Digital Board</h1>
+      <h1>צג דיגיטלי לבית הכנסת</h1>
       <PrayerTimesBoard prayerTimes={prayerTimes} />
       <button onClick={() => navigate("/admin")} className="bg-blue-500 text-white p-2 rounded">
         Go to Admin
