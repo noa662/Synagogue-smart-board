@@ -3,7 +3,6 @@ const { ZmanimCalendar, Location } = require('kosher-zmanim');
 function calculateHalachicTimes(lat, lon, elevation = 0) {
     const location = new Location(lat, lon, elevation);
     const calendar = new ZmanimCalendar(location);
-
     return {
         alotHashachar: calendar.getAlosHashachar(), // עלות השחר
         sunrise: calendar.getSunrise(), // זריחה
@@ -14,8 +13,8 @@ function calculateHalachicTimes(lat, lon, elevation = 0) {
         minchaKetana: calendar.getMinchaKetana(), // מנחה קטנה
         plagHamincha: calendar.getPlagHamincha(), // פלג המנחה
         sunset: calendar.getSunset(), // שקיעה
-        tzetHakochavim: calendar.getTzais(), // צאת הכוכבים
+        tzetHakochavim: calendar.getTzais() // צאת הכוכבים
     };
-}
+};
 
 module.exports = { calculateHalachicTimes };

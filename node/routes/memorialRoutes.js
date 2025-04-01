@@ -1,5 +1,5 @@
 const express = require("express");
-const { addMemorial, deleteMemorial, getAllMemorials, updateMemorial, getMemorialById } = require("../Controllers/MemorialController");
+const { addMemorial, deleteMemorial, getAllMemorials, updateMemorial, getMemorialById } = require('../controllers/memorialController');
 
 const router = express.Router();
 

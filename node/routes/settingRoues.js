@@ -1,5 +1,5 @@
 const express = require("express");
-const { addSetting, deleteSetting, getAllSettings, updateSetting, getSetting , resetSettings} = require("../Controllers/SettingController");
+const { addSetting, deleteSetting, getAllSettings, updateSetting, getSetting, resetSettings } = require('../controllers/settingController');
 
 const router = express.Router();
 

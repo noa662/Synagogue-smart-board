@@ -1,10 +1,10 @@
-const express = require("express")
-const cors = require("cors")
-const mongoose = require("mongoose")
-const bodyParser = require("body-parser")
-const dotenv = require("dotenv")
-dotenv.config()
-const app = express()
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+const app = express();
+dotenv.config();
 
 app.use(cors()); // מאפשר גישה מה-Client
 app.use(bodyParser.json());
@@ -15,18 +15,20 @@ mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: tr
     .catch(err => console.error("MongoDB connection error:", err));
 
 //יבוא ראוטים
-const eventRouter = require("./Routers/EventRouter")
-const memorialRouter = require("./Routers/MemorialRouter")
-const userRouter = require("./Routers/UserRouter")
-const prayerTimeRouter = require("./Routers/PrayerTimeRouter")
-const settingRouter = require("./Routers/SettingRouer")
+const eventRoutes = require("./routes/eventRoutes");
+const memorialRoutes = require("./routes/memorialRoutes");
+const userRoutes = require("./routes/userRoutes");
+const prayerTimeRoutes = require("./routes/prayerTimeRoutes");
+const settingRoutes = require("./routes/settingRoues");
+const authRoutes = require("./routes/authRoutes");
 
 //שימוש בנתיבים
-app.use("/events", eventRouter);
-app.use("/memorials", memorialRouter);
-app.use("/prayer-times", prayerTimeRouter);
-app.use("/users", userRouter);
-app.use("/settings", settingRouter);
+app.use("/events", eventRoutes);
+app.use("/memorials", memorialRoutes);
+app.use("/prayer-times", prayerTimeRoutes);
+app.use("/users", userRoutes);
+app.use("/settings", settingRoutes);
+app.use("/auth", authRoutes);
 
 //טיפול בשגיאות גלובליות
 app.use((err, req, res, next) => {
@@ -36,5 +38,5 @@ app.use((err, req, res, next) => {
 
 //הפעלת השרת
 app.listen(process.env.PORT, () => {
-    console.log("running!!")
-})
+    console.log("running!!");
+});

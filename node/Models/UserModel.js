@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { hashPassword, comparePassword } = require("../Utils/HashUtils");
+const { hashPassword, comparePassword } = require("../utils/hashUtils");
 
 // סכמת משתמש
 const userSchema = new mongoose.Schema({
@@ -11,15 +11,14 @@ const userSchema = new mongoose.Schema({
 
 // הצפנת סיסמה לפני שמירת המשתמש
 userSchema.pre("save", async function (next) {
-  if (this.isModified("password")) {
-    this.password = await hashPassword(this.password);
-  }
+  if (!this.isModified("password")) return next();
+  this.password = await hashPassword(this.password);
   next();
 });
 
-// פונקציה לאימות סיסמה (משתמשת בפונקציה מ-`Utils/hashUtils`)
-userSchema.methods.comparePassword = function (password) {
-  return comparePassword(password, this.password);
+// פונקציה להשוואת סיסמאות
+userSchema.methods.comparePassword = async function (password) {
+  return await comparePassword(password, this.password); // שימוש בפונקציה החיצונית
 };
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);

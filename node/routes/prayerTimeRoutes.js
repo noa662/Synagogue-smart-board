@@ -5,7 +5,7 @@ const {
     addPrayerTime,
     updatePrayerTime,
     deletePrayerTime
-} = require("../Controllers/PrayerTimeController");
+} = require('../controllers/prayerTimeController');
 
 const router = express.Router();
 
