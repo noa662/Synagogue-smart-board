@@ -10,7 +10,7 @@ const SynagogueBoard = () => {
   useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/prayer-times");
+        const response = await axios.get("http://localhost:8080/prayer-times/67eacba13f3e4ef2a2aebd26");
         setPrayerTimes(response.data);
       } catch (err) {
         console.error("Failed to fetch prayer times", err);
@@ -25,7 +25,7 @@ const SynagogueBoard = () => {
       <h1>צג דיגיטלי לבית הכנסת</h1>
       <PrayerTimesBoard prayerTimes={prayerTimes} />
       <button onClick={() => navigate("/admin")} className="bg-blue-500 text-white p-2 rounded">
-        Go to Admin
+        מנהל
       </button>
     </div>
   );

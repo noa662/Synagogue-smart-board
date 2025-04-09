@@ -31,11 +31,12 @@ const PrayerTimesBoard = ({ apiUrl }) => {
     <div>
 
       <Card title="זמני תפילה" className="w-full md:w-6 mx-auto mt-4 shadow-lg">
+     {console.log(response)}
         {prayerTimes && (
           <ul className="list-none p-0 m-0">
             <li><strong>שחרית:</strong> {prayerTimes.shacharit}</li>
             <li><strong>מנחה:</strong> {prayerTimes.mincha}</li>
-            <li><strong>ערבית:</strong> {prayerTimes.arvit}</li>
+            <li><strong>ערבית:</strong> {prayerTimes.maariv}</li>
           </ul>
         )}
       </Card>
