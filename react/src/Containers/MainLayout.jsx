@@ -6,6 +6,8 @@ const MainLayout = () => {
       {/* תפריט ניווט */}
       <nav className="bg-gray-200 p-4">
         <ul className="flex gap-4">
+        <li><Link to="/register">התחברות</Link></li>
+        <li><Link to="/login">הרשמה</Link></li>
           <li><Link to="/">בית</Link></li>
           <li><Link to="/prayers">זמני תפילה</Link></li>
           <li><Link to="/admin">ניהול</Link></li>

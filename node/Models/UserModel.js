@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   role: { type: String, enum: ["admin", "user"], default: "user" },
+  adminPassword: selectedRole === "admin" ? adminPassword : null
 });
 
 // הצפנת סיסמה לפני שמירת המשתמש

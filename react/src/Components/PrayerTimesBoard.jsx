@@ -1,6 +1,77 @@
-import { Card } from 'primereact/card';
+// import { Card } from 'primereact/card';3
+// import { useEffect, useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 
-const PrayerTimesBoard = ({ prayerTimes }) => {
+// const PrayerTimesBoard = () => {
+
+//   const [prayerTimes, setPrayerTimes] = useState(null);
+//   const [error, setError] = useState(null);
+//   const [currentTime, setCurrentTime] = useState(new Date());
+//   const navigate = useNavigate();
+
+//   // עדכון זמני תפילה
+//   useEffect(() => {
+//     const fetchPrayerTimes = async () => {
+//       try {
+//         const response = await axios.get("http://localhost:8080/prayer-times/67eacba13f3e4ef2a2aebd26");
+//         setPrayerTimes(response.data);
+//       } catch (err) {
+//         console.error("שגיאה בטעינת זמני תפילה:", err);
+//         setError("שגיאה בטעינת זמני תפילה");
+//       }
+//     };
+
+//     fetchPrayerTimes();
+//     const interval = setInterval(fetchPrayerTimes, 60000);
+//     return () => clearInterval(interval);
+//   }, []);
+
+//   if (!prayerTimes) {
+//     return <p className="text-center text-gray-600">טוען זמני תפילה...</p>;
+//   }
+
+//   return (
+//     <div className="max-w-md mx-auto mt-6">
+//       <Card title="זמני תפילה" className="shadow-2xl border-round-xl">
+//         <ul className="text-lg text-gray-800 space-y-2 leading-relaxed list-none p-0 m-0">
+//           <li><strong>שחרית:</strong> {prayerTimes.shacharit}</li>
+//           <li><strong>מנחה:</strong> {prayerTimes.mincha}</li>
+//           <li><strong>ערבית:</strong> {prayerTimes.maariv}</li>
+//         </ul>
+//       </Card>
+//     </div>
+//   );
+// };
+
+// export default PrayerTimesBoard;
+
+import { Card } from 'primereact/card';
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+const PrayerTimesBoard = () => {
+
+  const [prayerTimes, setPrayerTimes] = useState(null);
+  const [error, setError] = useState(null);
+
+  // עדכון זמני תפילה
+  useEffect(() => {
+    const fetchPrayerTimes = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/prayer-times/67eacba13f3e4ef2a2aebd26");
+        setPrayerTimes(response.data);
+      } catch (err) {
+        console.error("שגיאה בטעינת זמני תפילה:", err);
+        setError("שגיאה בטעינת זמני תפילה");
+      }
+    };
+
+    fetchPrayerTimes();
+    const interval = setInterval(fetchPrayerTimes, 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   if (!prayerTimes) {
     return <p className="text-center text-gray-600">טוען זמני תפילה...</p>;
   }
