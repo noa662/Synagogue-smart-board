@@ -25,9 +25,10 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username }).lean();
         if (!user || !(await user.comparePassword(password)))
             return res.status(400).json({ message: "Invalid credentials" });
+        
         const token = generateToken(user._id);
         res.json({ token, user: { id: user._id, username } });
     }

@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 const app = express();
 dotenv.config();
 app.use(cors()); // מאפשר גישה מה-Client
-app.use(bodyParser.json());
+app.use(bodyParser.json())
 
 //התחברות לmongoDB
 mongoose.connect(process.env.DB, { useNewUrlParser: true, useUnifiedTopology: true })
