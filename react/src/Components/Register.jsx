@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { FloatLabel } from "primereact/floatlabel";
@@ -6,6 +6,8 @@ import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
+import { createUser } from "../Store/UserSlice";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -13,6 +15,16 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [selectedRole, setSelectedRole] = useState(null);
   const [adminPassword, setAdminPassword] = useState("");
+
+  const dispatch = useDispatch();
+  
+  const user = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (user) {
+      console.log("המשתמש מהstate:", user);
+    }
+  }, [user]);
 
   const handleRoleChange = (role) => {
     setSelectedRole(prev => (prev === role ? null : role));
@@ -28,11 +40,13 @@ const Register = () => {
     };
 
     try {
-        await axios.post("http://localhost:8080/users", registrationData);
-        console.log("המשתמש נרשם בהצלחה");
-      } catch (err) {
-        console.error("שגיאה ביצירת משתמש חדש:", err);
-      }
+      await axios.post("http://localhost:8080/auth/register", registrationData);
+      // await axios.post("http://localhost:8080/users", registrationData);
+      console.log("המשתמש נרשם בהצלחה");
+      dispatch(createUser(registrationData));
+    } catch (err) {
+      console.error("שגיאה ביצירת משתמש חדש:", err);
+    }
   };
 
   return (
@@ -58,7 +72,6 @@ const Register = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               toggleMask
-              feedback={false}
               className="w-full"
             />
             <label htmlFor="password">סיסמה</label>

@@ -25,14 +25,15 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { username, password } = req.body;
-        const user = await User.findOne({ username }).lean();
+        console.log("Attempting login for:", username);
+        const user = await User.findOne({ username });
         if (!user || !(await user.comparePassword(password)))
             return res.status(400).json({ message: "Invalid credentials" });
-        
-        const token = generateToken(user._id);
-        res.json({ token, user: { id: user._id, username } });
+        const token = await generateToken(user._id);
+        res.json({ token, user: { id: user._id, username: user.username } });
     }
     catch (err) {
+        console.error("Login error:", err);
         res.status(500).json({ message: "Server error" });
     };
 };

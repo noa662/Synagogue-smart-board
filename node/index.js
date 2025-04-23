@@ -18,7 +18,7 @@ const eventRoutes = require("./routes/eventRoutes");
 const memorialRoutes = require("./routes/memorialRoutes");
 const userRoutes = require("./routes/userRoutes");
 const prayerTimeRoutes = require("./routes/prayerTimeRoutes");
-const settingRoutes = require("./routes/settingRoues");
+const settingRoutes = require("./routes/settingRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 //שימוש בנתיבים

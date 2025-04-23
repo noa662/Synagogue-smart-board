@@ -1,10 +1,11 @@
 const express = require("express");
 const verifyJWT = require("../middleware/verifyJWT");
-const { addUser, deleteUser, getAllUsers, updateUser, getUser } = require('../controllers/userController');
+const { addUser, deleteUser, getAllUsers, updateUser, getUser, getUserByName } = require('../controllers/userController');
 
 const router = express.Router();
 
 router.get("/",verifyJWT, getAllUsers);  // שליפת כל המשתמשים 
+router.get("/ByName/:username", getUserByName); // שליפת משתשמש ספציפי לפי שם
 router.get("/:id",verifyJWT, getUser);  // שליפת משתמש ספציפי לפי ID
 router.post("/", addUser);  // יצירת משתמש חדש
 router.put("/:id", updateUser);  // עדכון משתמש

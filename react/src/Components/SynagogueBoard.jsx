@@ -36,19 +36,20 @@ const SynagogueBoard = () => {
       <h1 className="text-3xl font-bold text-center mb-2">צג דיגיטלי לבית הכנסת</h1>
 
       <p className="text-xl text-center text-gray-700 mb-6">
-      <span className="font-bold">
-      {`תאריך: ${formatDate(currentTime)} | שעה: ${formatTime(currentTime)}`}
-      </span>
+        <span className="font-bold">
+          {`תאריך: ${formatDate(currentTime)} | שעה: ${formatTime(currentTime)}`}
+        </span>
       </p>
 
       <div className="text-center mt-6">
         <button
-          onClick={() => navigate("/admin")}
-          className="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition"
+          onClick={() => navigate("/login")}
+          className="bg-white text-blue-600 px-6 py-2 rounded-full border border-blue-600 hover:bg-blue-100 transition"
         >
           מעבר לממשק מנהל
         </button>
       </div>
+
     </div>
   );
 };
