@@ -1,6 +1,6 @@
 const User = require('../models/userModel');
 
-  
+
 
 async function addUser(req, res) {
     try {
@@ -55,15 +55,15 @@ async function updateUser(req, res) {
 
 async function getUserByName(req, res) {
 
-    console.log("Username param received:", username)
     try {
-        const { username } = req.params;
-        console.log("Username param received:", username)
-        const user = await User.findOne({ username }).lean();
-        if(!user)
-            return res.status(404).send({message:"User not found"});
+        const { name } = req.params;
+        console.log("Username param received:", name)
+        const user = await User.findOne({ username: name });
+        console.log(user);
+        if (!user)
+            return res.status(404).send({ message: "User not found" });
         res.status(200).send(user);
-    }  catch(error){
+    } catch (error) {
         console.error("Error fetching user:", error);
         res.status(500).send({ error: error.message });
     };

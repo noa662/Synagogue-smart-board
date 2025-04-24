@@ -1,14 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Password } from 'primereact/password';
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Button } from "primereact/button";
 import axios from "axios";
+import { useDispatch, useSelector } from 'react-redux';
+import { createUser } from "../Store/UserSlice";
 
 const Login = () => {
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user);
+  useEffect(() => {
+    if (user) {
+      console.log("המשתמש מהstate:", user);
+    }
+  }, [user]);
 
   const handleSubmit = async () => {
     const userLogin = {
@@ -20,16 +31,14 @@ const Login = () => {
       const response = await axios.post("http://localhost:8080/auth/login", userLogin);
       const token = response.data.token;
       console.log("המשתמש התחבר בהצלחה. טוקן:", token);
-
-
       localStorage.setItem("token", token);
       console.log("Trying to fetch user by name:", userLogin.username);
-
       const currentUser = await axios.get(`http://localhost:8080/users/ByName/${encodeURIComponent(userLogin.username)}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      dispatch(createUser(currentUser.data));
       console.log("משתמש נוכחי:", currentUser.data);
     } catch (err) {
       console.error("שגיאה בהתחברות:", err);

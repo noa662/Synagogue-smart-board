@@ -19,7 +19,6 @@ const Register = () => {
   const dispatch = useDispatch();
   
   const user = useSelector((state) => state.user);
-
   useEffect(() => {
     if (user) {
       console.log("המשתמש מהstate:", user);
@@ -41,7 +40,7 @@ const Register = () => {
 
     try {
       await axios.post("http://localhost:8080/auth/register", registrationData);
-      // await axios.post("http://localhost:8080/users", registrationData);
+      //await axios.post("http://localhost:8080/users", registrationData);
       console.log("המשתמש נרשם בהצלחה");
       dispatch(createUser(registrationData));
     } catch (err) {
