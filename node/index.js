@@ -20,6 +20,7 @@ const userRoutes = require("./routes/userRoutes");
 const prayerTimeRoutes = require("./routes/prayerTimeRoutes");
 const settingRoutes = require("./routes/settingRoutes");
 const authRoutes = require("./routes/authRoutes");
+const timesRoutes = require("./routes/timesRoutes");
 
 //שימוש בנתיבים
 app.use("/events", eventRoutes);
@@ -28,6 +29,7 @@ app.use("/prayer-times", prayerTimeRoutes);
 app.use("/users", userRoutes);
 app.use("/settings", settingRoutes);
 app.use("/auth", authRoutes);
+app.use("/times", timesRoutes);
 
 //טיפול בשגיאות גלובליות
 app.use((err, req, res, next) => {
