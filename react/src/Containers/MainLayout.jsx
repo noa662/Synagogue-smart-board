@@ -33,24 +33,14 @@ const MainLayout = () => {
       icon: 'pi pi-clock',
       command: () => navigate("/times")
     },
-    {
-      label: 'ניהול',
-      icon: 'pi pi-cog',
-      command: () => navigate("/admin")
-    },
-    {
-      label: 'הגדרות',
-      icon: 'pi pi-sliders-h',
-      command: () => navigate("/settings")
-    }
   ];
 
   return (
     <div>
-      <div className="shadow-md">
+      <div className="shadow-md fixed top-0 left-0 w-full z-50" style={{ zIndex: '1' }}>
         <Menubar model={items} />
       </div>
-      <div className="p-4">
+      <div className="p-4 mt-20" >
         <Outlet />
       </div>
     </div>

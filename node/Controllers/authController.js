@@ -3,7 +3,11 @@ const { generateToken } = require("../config/jwt-temp");
 
 exports.register = async (req, res) => {
     try {
-        const { username, password, email, role } = req.body;
+        const { username, password, email, role, adminPassword } = req.body;
+        if (role === "admin") {
+            if (adminPassword !== process.env.ADMIN_PASSWORD)
+                return res.status(403).json({ message: "סיסמת מנהל שגויה" });
+        }
         const existingUser = await User.findOne({ username });
         if (existingUser)
             return res.status(400).json({ message: "User already exists" });
@@ -16,10 +20,9 @@ exports.register = async (req, res) => {
         await newUser.save();
         const token = generateToken(newUser._id);
         res.status(201).json({ token, user: { id: newUser._id, username } });
-    }
-    catch (err) {
+    } catch (err) {
         res.status(500).json({ message: "Server error" });
-    };
+    }
 };
 
 exports.login = async (req, res) => {

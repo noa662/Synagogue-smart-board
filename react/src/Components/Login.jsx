@@ -21,31 +21,64 @@ const Login = () => {
     }
   }, [user]);
 
+  // const handleSubmit = async () => {
+  //   const userLogin = {
+  //     username: name,
+  //     password,
+  //   };
+
+  //   try {
+  //     const response = await axios.post("http://localhost:8080/auth/login", userLogin);
+  //     const token = response.data.token;
+  //     console.log("המשתמש התחבר בהצלחה. טוקן:", token);
+  //     localStorage.setItem("token", token);
+  //     console.log("Trying to fetch user by name:", userLogin.username);
+  //     const currentUser = await axios.get(`http://localhost:8080/users/ByName/${encodeURIComponent(userLogin.username)}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     dispatch(createUser(currentUser.data));
+  //     console.log("משתמש נוכחי:", currentUser.data);
+  //   } catch (err) {
+  //     console.error("שגיאה בהתחברות:", err);
+  //   }
+  // };
+
   const handleSubmit = async () => {
     const userLogin = {
       username: name,
       password,
     };
-
+  
     try {
       const response = await axios.post("http://localhost:8080/auth/login", userLogin);
       const token = response.data.token;
-      console.log("המשתמש התחבר בהצלחה. טוקן:", token);
       localStorage.setItem("token", token);
-      console.log("Trying to fetch user by name:", userLogin.username);
-      const currentUser = await axios.get(`http://localhost:8080/users/ByName/${encodeURIComponent(userLogin.username)}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      dispatch(createUser(currentUser.data));
-      console.log("משתמש נוכחי:", currentUser.data);
+  
+      const currentUser = await axios.get(
+        `http://localhost:8080/users/ByName/${encodeURIComponent(userLogin.username)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      const userData = currentUser.data;
+      dispatch(createUser(userData));
+      
+      if (userData.role === "admin") {
+        window.location.href = "/admin";
+      } else {
+        window.location.href = "/";
+      }
+  
     } catch (err) {
       console.error("שגיאה בהתחברות:", err);
     }
   };
-
-
+  
   return (<>
     <div className="card flex justify-content-center w-[700px]">
       <FloatLabel>

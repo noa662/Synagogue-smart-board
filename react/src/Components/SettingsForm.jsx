@@ -1,6 +1,6 @@
 const SettingForm = () => {
     return (
-        <></>
+        <>הגדרות כלשהם...</>
     );
 };
 

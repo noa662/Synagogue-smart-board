@@ -13,7 +13,6 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-
 const store = configureStore({
   reducer: {
     user: userReducer
