@@ -25,15 +25,26 @@ const MainLayout = () => {
     },
     {
       label: 'זמני תפילה',
-      icon: 'pi pi-clock',
+      icon: 'pi pi-calendar-clock', // אייקון של לוח שנה עם שעון
       command: () => navigate("/prayers")
     },
     {
       label: 'זמני היום',
-      icon: 'pi pi-clock',
+      icon: 'pi pi-sun', // שמש - מתאים לזמני היום
       command: () => navigate("/times")
     },
+    {
+      label: 'אירועים',
+      icon: 'pi pi-calendar-plus', // אייקון שמתאים לאירועים
+      command: () => navigate("/events")
+    },
+    {
+      label: 'שליחת פניה',
+      icon: 'pi pi-send', // אייקון של שליחה
+      command: () => navigate("/addInquiry")
+    },
   ];
+
 
   return (
     <div>

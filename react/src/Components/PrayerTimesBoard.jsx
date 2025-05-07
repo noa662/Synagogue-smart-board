@@ -11,7 +11,14 @@ const PrayerTimesBoard = () => {
   useEffect(() => {
     const fetchPrayerTimes = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/prayer-times/67eacba13f3e4ef2a2aebd26");
+        const today = new Date().toISOString().split("T")[0];
+        console.log("Sending request for date:", today);
+
+        const response = await axios.get("http://localhost:8080/prayer-times/getPrayerTimesByDate", {
+          params: {
+            date: today
+          }
+        });
         setPrayerTimes(response.data);
       } catch (err) {
         console.error("שגיאה בטעינת זמני תפילה:", err);

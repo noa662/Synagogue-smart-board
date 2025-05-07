@@ -20,6 +20,11 @@ const AdminLayout = () => {
       command: () => navigate("/admin/inquiries")
     },
     {
+      label: 'עדכון זמני תפילה',
+      icon: 'pi pi-envelope',
+      command: () => navigate("/admin/updateTimes")
+    },
+    {
       label: 'הוספת אירוע',
       icon: 'pi pi-briefcase',
       command: () => navigate("/admin/addEvent")

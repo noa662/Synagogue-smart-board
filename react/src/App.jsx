@@ -9,6 +9,9 @@ import Register from "./Components/Register";
 import Login from "./Components/Login";
 import Inquiries from "./Components/Inquiries";
 import AddEvent from "./Components/AddEvent";
+import UpdateTimes from "./Components/UpdateTimes";
+import Events from "./Components/Events";
+import AddInquiry from "./Components/AddInquiry";
 
 const App = () => {
   return (
@@ -20,10 +23,13 @@ const App = () => {
         <Route path="login" element={<Login />} />
         <Route path="prayers" element={<PrayerTimesBoard />} />
         <Route path="times" element={<TodaysTimes />} />
+        <Route path="addInquiry" element={<AddInquiry />} />
+        <Route path="events" element={<Events />} />
       </Route>
       {/* תפריט מנהל */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="inquiries" element={<Inquiries />} />
+        <Route path="updateTimes" element={<UpdateTimes />} />
         <Route path="addEvent" element={<AddEvent />} />
         <Route path="settings" element={<SettingsForm />} />
       </Route>
