@@ -12,8 +12,33 @@ import AddEvent from "./Components/AddEvent";
 import UpdateTimes from "./Components/UpdateTimes";
 import Events from "./Components/Events";
 import AddInquiry from "./Components/AddInquiry";
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { createUser } from "./Store/UserSlice";
+import axios from 'axios';
 
 const App = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchUserFromToken = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          const response = await axios.get("http://localhost:8080/auth/getUserFromToken", {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          dispatch(createUser(response.data));
+        } catch (err) {
+          console.error("שגיאה באימות טוקן:", err);
+        }
+      }
+    };
+
+    fetchUserFromToken();
+  }, []);
+
   return (
     <Routes>
       {/* תפריט רגיל */}

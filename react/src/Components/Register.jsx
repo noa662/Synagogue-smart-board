@@ -17,7 +17,7 @@ const Register = () => {
   const [adminPassword, setAdminPassword] = useState("");
 
   const dispatch = useDispatch();
-  
+
   const user = useSelector((state) => state.user);
   useEffect(() => {
     if (user) {
@@ -39,10 +39,13 @@ const Register = () => {
     };
 
     try {
-      await axios.post("http://localhost:8080/auth/register", registrationData);
+      //await axios.post("http://localhost:8080/auth/register", registrationData);
       //await axios.post("http://localhost:8080/users", registrationData);
+      const response = await axios.post("http://localhost:8080/auth/register", registrationData);
       console.log("המשתמש נרשם בהצלחה");
-      dispatch(createUser(registrationData));
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      localStorage.setItem("token", token);
     } catch (err) {
       console.error("שגיאה ביצירת משתמש חדש:", err);
     }

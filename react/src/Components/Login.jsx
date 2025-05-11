@@ -21,31 +21,7 @@ const Login = () => {
     }
   }, [user]);
 
-  // const handleSubmit = async () => {
-  //   const userLogin = {
-  //     username: name,
-  //     password,
-  //   };
-
-  //   try {
-  //     const response = await axios.post("http://localhost:8080/auth/login", userLogin);
-  //     const token = response.data.token;
-  //     console.log("המשתמש התחבר בהצלחה. טוקן:", token);
-  //     localStorage.setItem("token", token);
-  //     console.log("Trying to fetch user by name:", userLogin.username);
-  //     const currentUser = await axios.get(`http://localhost:8080/users/ByName/${encodeURIComponent(userLogin.username)}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     dispatch(createUser(currentUser.data));
-  //     console.log("משתמש נוכחי:", currentUser.data);
-  //   } catch (err) {
-  //     console.error("שגיאה בהתחברות:", err);
-  //   }
-  // };
-
-  const handleSubmit = async () => {
+const handleSubmit = async () => {
     const userLogin = {
       username: name,
       password,

@@ -49,3 +49,4 @@ const PrayerTimesBoard = () => {
 };
 
 export default PrayerTimesBoard;
+
