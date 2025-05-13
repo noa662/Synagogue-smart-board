@@ -24,6 +24,7 @@ async function getPrayerTimeById(req, res) {
 };
 
 async function addPrayerTime(req, res) {
+    console.log("gyerighur")
     try {
         const newPrayerTime = new PrayerTime(req.body);
         await newPrayerTime.save();
