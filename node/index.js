@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const dotenv = require("dotenv");
 const app = express();
 dotenv.config();
-app.use(cors()); // מאפשר גישה מה-Client
+app.use(cors()); 
 app.use(bodyParser.json())
 
 //התחברות לmongoDB
@@ -22,6 +22,7 @@ const settingRoutes = require("./routes/settingRoutes");
 const authRoutes = require("./routes/authRoutes");
 const timesRoutes = require("./routes/timesRoutes");
 const inquiryRoutes = require("./routes/inquiryRoutes");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 //שימוש בנתיבים
 app.use("/events", eventRoutes);
@@ -32,6 +33,9 @@ app.use("/settings", settingRoutes);
 app.use("/auth", authRoutes);
 app.use("/times", timesRoutes);
 app.use("/inquiries", inquiryRoutes);
+app.use("/upload", uploadRoutes);
+
+app.use("/uploads", express.static("uploads"));
 
 //טיפול בשגיאות גלובליות
 app.use((err, req, res, next) => {

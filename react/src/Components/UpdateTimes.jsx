@@ -6,18 +6,16 @@ import axios from 'axios';
 
 const UpdateTimes = () => {
     const [shacharit, setShacharit] = useState('');
-    const [mincha, setmincha] = useState('');
-    const [maariv, setmaariv] = useState('');
+    const [mincha, setMincha] = useState('');
+    const [maariv, setMaariv] = useState('');
     const [date, setDate] = useState(null);
-    const [location, setLocation] = useState(null);
+    const [location, setLocation] = useState(''); // location now string
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             (pos) => {
-                setLocation({
-                    lat: pos.coords.latitude,
-                    lng: pos.coords.longitude,
-                });
+                const locString = `${pos.coords.latitude},${pos.coords.longitude}`;
+                setLocation(locString);
             },
             (err) => {
                 console.error("Location error", err);
@@ -26,7 +24,6 @@ const UpdateTimes = () => {
     }, []);
 
     const handleSubmit = async () => {
-
         const token = localStorage.getItem("token");
         if (!token) {
             console.error("No token found");
@@ -34,15 +31,17 @@ const UpdateTimes = () => {
         }
 
         const prayerTime = {
-            date: date.toISOString(),
+            date: date ? date.toISOString() : null,
             shacharit,
             mincha,
             maariv,
-            location
+            location // string here
         };
 
+        console.log("תפילה:", prayerTime);
+
         try {
-            await axios.post("http://localhost:8080/prayer-times/", prayerTime,
+            await axios.post("http://localhost:8080/prayer-times", prayerTime,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -65,11 +64,11 @@ const UpdateTimes = () => {
             </div>
             <br />
             <div className="card flex justify-content-center">
-                <InputText value={mincha} onChange={(e) => setmincha(e.target.value)} placeholder="מנחה" />
+                <InputText value={mincha} onChange={(e) => setMincha(e.target.value)} placeholder="מנחה" />
             </div>
             <br />
             <div className="card flex justify-content-center">
-                <InputText value={maariv} onChange={(e) => setmaariv(e.target.value)} placeholder="ערבית" />
+                <InputText value={maariv} onChange={(e) => setMaariv(e.target.value)} placeholder="ערבית" />
             </div>
             <br />
             <Button

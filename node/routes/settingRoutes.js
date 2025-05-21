@@ -4,9 +4,9 @@ const { addSetting, deleteSetting, getAllSettings, updateSetting, getSetting, re
 
 const router = express.Router();
 
-router.get("/",verifyJWT, getAllSettings);  // שליפת כל ההגדרות
+router.get("/", getAllSettings);  // שליפת כל ההגדרות
 router.get("/:id",verifyJWT, getSetting);  // שליפת הגדרה ספציפית לפי ID
-router.post("/",verifyJWT, addSetting);  // יצירת הגדרה חדשה
+router.post("/", addSetting);  // יצירת הגדרה חדשה
 router.put("/:id",verifyJWT, updateSetting);  // עדכון הגדרה
 router.delete("/:id",verifyJWT, deleteSetting);  // מחיקת הגדרה
 router.post("/reset",verifyJWT, resetSettings);  // איפוס ההגדרות

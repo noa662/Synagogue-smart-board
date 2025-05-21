@@ -1,0 +1,22 @@
+:root {
+  --main-color: #6466f1;
+  --font: 'Heebo', sans-serif;
+  --background: url('/img/3.jpg');
+}
+
+body {
+  font-family: var(--font);
+  color: var(--main-color);
+  background: var(--background);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* דוגמה לכפתורים */
+.p-button {
+  background-color: var(--main-color);
+  color: white;
+  font-family: var(--font);
+  font-weight: bold;
+}

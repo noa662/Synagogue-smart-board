@@ -100,7 +100,7 @@ const TodaysTimes = () => {
     if (error) return <p className="text-center text-red-500 mt-4">{error}</p>;
 
     return (
-        <div className="card w-full" dir="rtl" style={{ marginTop: '60px', zIndex:'0' }}>
+        <div className="card w-full" dir="rtl" style={{ marginTop: '20vh', zIndex:'0' }}>
             <DataTable
                 value={zmanim}
                 paginator

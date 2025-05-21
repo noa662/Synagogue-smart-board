@@ -12,6 +12,8 @@ import userReducer from './Store/UserSlice';
 import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import './theme.css';
+import DesignProvider from './DesignProvider';
 
 const store = configureStore({
   reducer: {
@@ -20,13 +22,15 @@ const store = configureStore({
 });
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <Provider store={store}>
-      <PrimeReactProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </PrimeReactProvider>
-    </Provider>
-  </StrictMode>
+  <DesignProvider>
+    <StrictMode>
+      <Provider store={store}>
+        <PrimeReactProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </PrimeReactProvider>
+      </Provider>
+    </StrictMode>
+  </DesignProvider>
 );
