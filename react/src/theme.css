@@ -13,10 +13,18 @@ body {
   background-attachment: fixed;
 }
 
+.custom-button {
+  color: black !important;
+  /* משנה את הצבע של האייקון והטקסט */
+  border-color: red !important;
+  /* אם צריך לשנות גם את צבע המסגרת */
+}
+
 /* דוגמה לכפתורים */
 .p-button {
   background-color: var(--main-color);
-  color: white;
+  color: black !important;
+  background-color: rgb(2, 248, 166) ;
   font-family: var(--font);
   font-weight: bold;
 }

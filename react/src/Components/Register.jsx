@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { FloatLabel } from "primereact/floatlabel";
@@ -8,6 +8,7 @@ import { Card } from "primereact/card";
 import axios from "axios";
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from "../Store/UserSlice";
+import { Toast } from "primereact/toast";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -16,6 +17,7 @@ const Register = () => {
   const [selectedRole, setSelectedRole] = useState(null);
   const [adminPassword, setAdminPassword] = useState("");
 
+  const toast = useRef(null);
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.user);
@@ -43,16 +45,34 @@ const Register = () => {
       //await axios.post("http://localhost:8080/users", registrationData);
       const response = await axios.post("http://localhost:8080/auth/register", registrationData);
       console.log("המשתמש נרשם בהצלחה");
+      toast.current.show({
+        severity: "success",
+        summary: "הצלחה",
+        detail: "המשתמש נרשם בהצלחה",
+        life: 3000,
+      });
       const token = response.data.token;
       localStorage.setItem("token", token);
       localStorage.setItem("token", token);
     } catch (err) {
       console.error("שגיאה ביצירת משתמש חדש:", err);
+      toast.current.show({
+        severity: "error",
+        summary: "שגיאה",
+        detail: "אירעה שגיאה בהרשמה, נסה שוב",
+        life: 3000,
+      });
     }
+
+    if (selectedRole === "admin")
+      window.location.href = "/Admin";
+    else
+      window.location.href = "/";
   };
 
   return (
     <div className="flex justify-content-center mt-8">
+      <Toast ref={toast} />
       <Card title="טופס הרשמה" className="w-full max-w-[500px] shadow-3">
         <div className="flex flex-column gap-4">
 
@@ -142,3 +162,4 @@ const Register = () => {
 };
 
 export default Register;
+

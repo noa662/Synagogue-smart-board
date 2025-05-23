@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { Toast } from "primereact/toast";
 
 const TodaysTimes = () => {
     const [zmanim, setZmanim] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const toast = useRef(null);
 
     const zmanimTitles = {
         Alos72: "עלות השחר 72 דקות",
@@ -42,6 +44,7 @@ const TodaysTimes = () => {
                         const response = await axios.get('http://localhost:8080/times', {
                             params: { lat: latitude, lon: longitude }
                         });
+
                         const contentType = response.headers['content-type'];
                         if (contentType && contentType.includes('application/json')) {
                             const basicZmanim = response.data.BasicZmanim;
@@ -58,22 +61,31 @@ const TodaysTimes = () => {
                                 }));
 
                             setZmanim(formatted);
+                            setError(null);
                         } else {
-                            setError("השרת לא החזיר נתונים בפורמט JSON");
+                            const errMsg = "השרת לא החזיר נתונים בפורמט JSON";
+                            setError(errMsg);
+                            toast.current.show({ severity: 'error', summary: 'שגיאה', detail: errMsg, life: 5000 });
                         }
                     } catch (err) {
-                        setError("שגיאה בשליפת זמני היום");
+                        const errMsg = "שגיאה בשליפת זמני היום";
+                        setError(errMsg);
+                        toast.current.show({ severity: 'error', summary: 'שגיאה', detail: errMsg, life: 5000 });
                     } finally {
                         setLoading(false);
                     }
                 },
                 () => {
-                    setError("יש לאפשר גישה למיקום על מנת להציג זמני היום");
+                    const errMsg = "יש לאפשר גישה למיקום על מנת להציג זמני היום";
+                    setError(errMsg);
+                    toast.current.show({ severity: 'warn', summary: 'אזהרה', detail: errMsg, life: 5000 });
                     setLoading(false);
                 }
             );
         } else {
-            setError("הדפדפן לא תומך בזיהוי מיקום");
+            const errMsg = "הדפדפן לא תומך בזיהוי מיקום";
+            setError(errMsg);
+            toast.current.show({ severity: 'error', summary: 'שגיאה', detail: errMsg, life: 5000 });
             setLoading(false);
         }
     }, []);
@@ -96,22 +108,37 @@ const TodaysTimes = () => {
         }
     };
 
-    if (loading) return <p className="text-center mt-4">טוען זמני היום...</p>;
-    if (error) return <p className="text-center text-red-500 mt-4">{error}</p>;
+    if (loading) return <p className="text-center mt-4 text-lg">טוען זמני היום...</p>;
+    if (error && zmanim.length === 0) return <p className="text-center text-red-600 mt-4 text-lg">{error}</p>;
 
     return (
-        <div className="card w-full" dir="rtl" style={{ marginTop: '20vh', zIndex:'0' }}>
+        <div className="card w-full max-w-3xl mx-auto p-6 shadow-lg" dir="rtl" style={{ marginTop: '15vh', backgroundColor: '#f9fafb', borderRadius: '12px' }}>
+            <Toast ref={toast} position="top-center" />
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 text-right">זמני היום</h2>
             <DataTable
                 value={zmanim}
                 paginator
                 rows={10}
                 rowsPerPageOptions={[10, 20, 50]}
-                tableStyle={{ width: '100%' }}
+                tableStyle={{ width: '100%', direction: 'rtl' }}
                 stripedRows
-                style={{ direction: 'rtl' }}
+                className="shadow-sm rounded-lg"
+                emptyMessage="אין זמני היום להצגה"
             >
-                <Column field="title" header="זמן" bodyClassName="text-right" headerClassName="text-right" />
-                <Column field="time" header="שעה" bodyClassName="text-right" headerClassName="text-right" />
+                <Column
+                    field="title"
+                    header="זמן"
+                    bodyClassName="text-right text-lg font-semibold text-gray-700"
+                    headerClassName="text-right text-lg font-semibold"
+                    style={{ minWidth: '60%' }}
+                />
+                <Column
+                    field="time"
+                    header="שעה"
+                    bodyClassName="text-right text-lg text-blue-700"
+                    headerClassName="text-right text-lg font-semibold"
+                    style={{ minWidth: '40%' }}
+                />
             </DataTable>
         </div>
     );

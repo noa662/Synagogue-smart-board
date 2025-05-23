@@ -6,6 +6,7 @@ import { Button } from "primereact/button";
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { useRef } from 'react';
+import { Card } from "primereact/card";
 
 const AddInquiry = () => {
     const [subjectOfInquiry, setSubjectOfInquiry] = useState('');
@@ -42,7 +43,7 @@ const AddInquiry = () => {
             description
         };
 
-        if (!user || user.userName === "?") {
+        if (!user || user.userName === "?" || user.userName === undefined) {
             console.log("המשתמש לא מחובר למערכת");
             toast.current.show({
                 severity: 'warn',
@@ -95,39 +96,40 @@ const AddInquiry = () => {
     };
 
     return (
-        <div className="card flex flex-column gap-3 max-w-md mx-auto mt-6" dir="rtl">
-            <Toast ref={toast} position="top-center" />
-            <h2 className="text-xl font-bold text-center">שליחת פנייה</h2>
+        <Card title="טופס שליחת פנייה" className="w-full max-w-[500px] shadow-3">
+            <div className="card flex flex-column gap-3 max-w-md mx-auto mt-6" dir="rtl">
+                <Toast ref={toast} position="top-center" />
 
-            <div>
-                <label htmlFor="subject" className="block mb-2">נושא הפנייה</label>
-                <InputText
-                    id="subject"
-                    value={subjectOfInquiry}
-                    onChange={(e) => setSubjectOfInquiry(e.target.value)}
-                    className="w-full"
+                <div>
+                    <label htmlFor="subject" className="block mb-2">נושא הפנייה</label>
+                    <InputText
+                        id="subject"
+                        value={subjectOfInquiry}
+                        onChange={(e) => setSubjectOfInquiry(e.target.value)}
+                        className="w-full"
+                    />
+                </div>
+
+                <div>
+                    <label htmlFor="description" className="block mb-2">תיאור</label>
+                    <InputTextarea
+                        id="description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        rows={5}
+                        className="w-full"
+                        autoResize
+                    />
+                </div>
+
+                <Button
+                    label="שלח פנייה"
+                    icon="pi pi-send"
+                    className="w-full mt-4"
+                    onClick={handleSubmit}
                 />
             </div>
-
-            <div>
-                <label htmlFor="description" className="block mb-2">תיאור</label>
-                <InputTextarea
-                    id="description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    rows={5}
-                    className="w-full"
-                    autoResize
-                />
-            </div>
-
-            <Button
-                label="שלח פנייה"
-                icon="pi pi-send"
-                className="w-full mt-4"
-                onClick={handleSubmit}
-            />
-        </div>
+        </Card>
     );
 };
 

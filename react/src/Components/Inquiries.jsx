@@ -1,32 +1,3 @@
-// import axios from "axios";
-// import { useEffect, useState } from "react";
-
-// const Inquiries = () => {
-
-//     const [inquiries, setInquiries] = useState([]);
-
-//     const fetchInquiries = async () => {
-//         try {
-//             const response = await axios.get("http://localhost:8080/inquiries");
-//             setInquiries(response.data);
-//         } catch (error) {
-//             console.error("בעיה בשליפת פניות:", error);
-//         }
-//     };
-
-//     useEffect(() => {
-//         fetchInquiries();
-//     }, []);
-
-
-//     return (
-//         <div>
-//         </div>
-//     );
-// };
-
-// export default Inquiries;
-
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { DataTable } from "primereact/datatable";
@@ -51,6 +22,12 @@ const Inquiries = () => {
             setInquiries(response.data);
         } catch (error) {
             console.error("בעיה בשליפת פניות:", error);
+            toast.current.show({
+                severity: 'error',
+                summary: 'שגיאה',
+                detail: 'בעיה בשליפת פניות',
+                life: 3000
+            });
         }
     };
 
@@ -75,14 +52,14 @@ const Inquiries = () => {
 
     const deleteDialogFooter = (
         <>
-            <Button label="לא" icon="pi pi-times" onClick={() => setDeleteDialogVisible(false)} outlined />
-            <Button label="כן" icon="pi pi-check" severity="danger" onClick={deleteInquiry} />
+            <Button className="custom-button" label="לא" icon="pi pi-times" onClick={() => setDeleteDialogVisible(false)} outlined />
+            <Button className="custom-button" label="כן" icon="pi pi-check" severity="danger" onClick={deleteInquiry} />
         </>
     );
 
     const actionTemplate = (rowData) => {
         return (
-            <Button icon="pi pi-trash" severity="danger" rounded outlined onClick={() => confirmDelete(rowData)} />
+            <Button className="custom-button" icon="pi pi-trash" severity="danger" rounded outlined onClick={() => confirmDelete(rowData)} />
         );
     };
 
@@ -92,7 +69,7 @@ const Inquiries = () => {
 
     return (
         <div className="card">
-            <Toast ref={toast} />
+            <Toast ref={toast} position="top-center" />
             <h3>פניות שהתקבלו</h3>
             <DataTable
                 className="custom-table"
