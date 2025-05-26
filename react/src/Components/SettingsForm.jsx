@@ -10,6 +10,7 @@ import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import axios from 'axios';
 import { DesignContext } from '../DesignProvider';
+import { uploadImage, saveSettings } from "../Services/settingsService";
 
 const SettingsForm = () => {
   const { setSettings } = useContext(DesignContext);
@@ -42,17 +43,8 @@ const SettingsForm = () => {
 
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append('image', file);
-
-      const response = await axios.post('http://localhost:8080/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setSelectedImage(response.data.imageUrl);
+      const imageUrl = await uploadImage(file, token);
+      setSelectedImage(imageUrl);
       toast.current.show({ severity: 'success', summary: 'הצלחה', detail: 'תמונה הועלתה בהצלחה', life: 3000 });
     } catch (err) {
       toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'העלאת תמונה נכשלה', life: 3000 });
@@ -73,12 +65,7 @@ const SettingsForm = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:8080/settings', registrationData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      await saveSettings(registrationData, token);
       setSettings(registrationData);
       toast.current.show({ severity: 'success', summary: 'נשמר', detail: 'ההגדרות נשמרו בהצלחה', life: 3000 });
     } catch (err) {

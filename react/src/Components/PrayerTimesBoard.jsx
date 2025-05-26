@@ -2,32 +2,38 @@ import { Card } from 'primereact/card';
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Toast } from 'primereact/toast';
+import { getPrayerTimesByDate } from "../Services/prayerService";
+
 
 const PrayerTimesBoard = () => {
   const [prayerTimes, setPrayerTimes] = useState(null);
   const [error, setError] = useState(null);
   const toast = useRef(null);
 
-  useEffect(() => {
-    const fetchPrayerTimes = async () => {
-      try {
-        const today = new Date().toISOString().split("T")[0];
-        const response = await axios.get("http://localhost:8080/prayer-times/getPrayerTimesByDate", {
-          params: { date: today }
-        });
-        setPrayerTimes(response.data);
-        setError(null);
-      } catch (err) {
-        console.error("שגיאה בטעינת זמני תפילה:", err);
-        setError("שגיאה בטעינת זמני תפילה");
-        toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'לא ניתן לטעון זמני תפילה', life: 4000 });
-      }
-    };
+useEffect(() => {
+  const fetchPrayerTimes = async () => {
+    try {
+      const today = new Date().toISOString().split("T")[0];
+      const data = await getPrayerTimesByDate(today);
+      setPrayerTimes(data);
+      setError(null);
+    } catch (err) {
+      console.error("שגיאה בטעינת זמני תפילה:", err);
+      setError("שגיאה בטעינת זמני תפילה");
+      toast.current.show({
+        severity: 'error',
+        summary: 'שגיאה',
+        detail: 'לא ניתן לטעון זמני תפילה',
+        life: 4000
+      });
+    }
+  };
 
-    fetchPrayerTimes();
-    const interval = setInterval(fetchPrayerTimes, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  fetchPrayerTimes();
+  const interval = setInterval(fetchPrayerTimes, 60000);
+  return () => clearInterval(interval);
+}, []);
+
 
   if (!prayerTimes && !error) {
     return <p className="text-center text-gray-600 text-xl">טוען זמני תפילה...</p>;

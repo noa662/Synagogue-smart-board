@@ -5,10 +5,10 @@ import { FloatLabel } from "primereact/floatlabel";
 import { Checkbox } from "primereact/checkbox";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
-import axios from "axios";
-import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from "../Store/UserSlice";
 import { Toast } from "primereact/toast";
+import { useDispatch, useSelector } from "react-redux";
+import { createUser } from "../Store/UserSlice";
+import { registerUser } from "../Services/userService";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -19,8 +19,8 @@ const Register = () => {
 
   const toast = useRef(null);
   const dispatch = useDispatch();
-
   const user = useSelector((state) => state.user);
+
   useEffect(() => {
     if (user) {
       console.log("המשתמש מהstate:", user);
@@ -28,7 +28,7 @@ const Register = () => {
   }, [user]);
 
   const handleRoleChange = (role) => {
-    setSelectedRole(prev => (prev === role ? null : role));
+    setSelectedRole((prev) => (prev === role ? null : role));
   };
 
   const handleSubmit = async () => {
@@ -41,21 +41,22 @@ const Register = () => {
     };
 
     try {
-      //await axios.post("http://localhost:8080/auth/register", registrationData);
-      //await axios.post("http://localhost:8080/users", registrationData);
-      const response = await axios.post("http://localhost:8080/auth/register", registrationData);
-      console.log("המשתמש נרשם בהצלחה");
+      const response = await registerUser(registrationData);
+      const { token, ...userData } = response.data;
+
       toast.current.show({
         severity: "success",
         summary: "הצלחה",
-        detail: "המשתמש נרשם בהצלחה",
+        detail: "נרשמת בהצלחה",
         life: 3000,
       });
-      const token = response.data.token;
+
       localStorage.setItem("token", token);
-      localStorage.setItem("token", token);
+      dispatch(createUser(userData));
+
+      window.location.href = selectedRole === "admin" ? "/admin" : "/";
     } catch (err) {
-      console.error("שגיאה ביצירת משתמש חדש:", err);
+      console.error("שגיאה בהרשמה:", err);
       toast.current.show({
         severity: "error",
         summary: "שגיאה",
@@ -63,17 +64,12 @@ const Register = () => {
         life: 3000,
       });
     }
-
-    if (selectedRole === "admin")
-      window.location.href = "/Admin";
-    else
-      window.location.href = "/";
   };
 
   return (
-    <div className="flex justify-content-center mt-8">
+    <div className="flex justify-content-center mt-8 px-4">
       <Toast ref={toast} />
-      <Card title="טופס הרשמה" className="w-full max-w-[500px] shadow-3">
+      <Card title="הרשמה" className="w-full max-w-[500px] shadow-4 p-6 border-round-xl">
         <div className="flex flex-column gap-4">
 
           {/* שם משתמש */}
@@ -113,19 +109,17 @@ const Register = () => {
           {/* תפקיד */}
           <div className="flex flex-column gap-2 mt-3">
             <span className="text-sm text-gray-600 mb-1">בחר תפקיד:</span>
-            <div className="flex align-items-center gap-2">
+            <div className="flex align-items-center gap-3">
               <Checkbox
                 inputId="user"
-                value="user"
                 onChange={() => handleRoleChange("user")}
                 checked={selectedRole === "user"}
               />
               <label htmlFor="user" className="cursor-pointer">משתמש</label>
             </div>
-            <div className="flex align-items-center gap-2">
+            <div className="flex align-items-center gap-3">
               <Checkbox
                 inputId="admin"
-                value="admin"
                 onChange={() => handleRoleChange("admin")}
                 checked={selectedRole === "admin"}
               />
@@ -148,7 +142,7 @@ const Register = () => {
             </FloatLabel>
           )}
 
-          {/* כפתור שליחה */}
+          {/* כפתור הרשמה */}
           <Button
             label="הירשם"
             icon="pi pi-user-plus"
@@ -162,4 +156,3 @@ const Register = () => {
 };
 
 export default Register;
-

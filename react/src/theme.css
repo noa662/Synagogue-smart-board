@@ -1,30 +1,83 @@
 :root {
   --main-color: #6466f1;
+  --accent-color: rgb(2, 248, 166);
   --font: 'Heebo', sans-serif;
-  --background: url('/img/3.jpg');
+  --background-image: url('/img/3.jpg');
 }
 
 body {
   font-family: var(--font);
   color: var(--main-color);
-  background: var(--background);
+  background: var(--background-image);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
+  margin: 0;
+  padding: 0;
 }
 
-.custom-button {
-  color: black !important;
-  /* משנה את הצבע של האייקון והטקסט */
-  border-color: red !important;
-  /* אם צריך לשנות גם את צבע המסגרת */
-}
-
-/* דוגמה לכפתורים */
+/* כפתור כללי */
 .p-button {
-  background-color: var(--main-color);
+  background-color: var(--accent-color) !important;
   color: black !important;
-  background-color: rgb(2, 248, 166) ;
+  border: none;
   font-family: var(--font);
   font-weight: bold;
+  transition: background-color 0.3s;
+}
+
+.p-button:hover {
+  background-color: var(--main-color) !important;
+  color: blue !important;
+}
+
+/* כפתור מותאם אישית */
+.custom-button {
+  color: black !important;
+  border: 2px solid red !important;
+  background-color: white !important;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.custom-button:hover {
+  background-color: red !important;
+  color: white !important;
+}
+
+/* שדרוג נוסף: כרטיס */
+.p-card {
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* תוויות וצורות כלליות */
+label {
+  color: #333;
+  font-weight: 500;
+}
+
+:root {
+  --main-color: #6466f1;
+  --font: 'Heebo', sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  color: #333;
+  background: url('/img/3.jpg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.p-datatable {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.p-datatable-thead > tr > th {
+  background-color: #f3f4f6; /* bg-gray-100 */
+  font-weight: bold;
+  font-size: 1.1rem;
 }
