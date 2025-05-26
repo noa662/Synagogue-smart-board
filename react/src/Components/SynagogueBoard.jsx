@@ -32,23 +32,21 @@ const SynagogueBoard = () => {
   return (
     <div
       dir="rtl"
-      className="min-h-screen h-screen w-screen overflow-hidden bg-blue-50 p-6 text-center font-sans flex flex-col justify-center items-center"
+      className="min-h-screen h-screen w-screen overflow-hidden bg-blue-50 p-6 text-center font-sans flex flex-col justify-center items-center mt=20"
     >
-      <div className="text-center max-w-md w-full mx-auto">
-        <h1 className="text-4xl font-bold mb-4">צג דיגיטלי לבית הכנסת</h1>
-
-        <p className="text-2xl text-gray-700 mb-8">
-          <span className="font-bold">
-            {`תאריך: ${formatDate(currentTime)} | שעה: ${formatTime(currentTime)}`}
-          </span>
-        </p>
-
-        <button
-          onClick={() => navigate("/login")}
-          className="bg-white text-blue-600 px-8 py-3 text-xl rounded-full border border-blue-600 hover:bg-blue-100 transition"
-        >
-          מעבר לממשק מנהל
-        </button>
+        <div className="text-center max-w-md w-full mx-auto">
+          <h1 className="text-4xl font-bold mb-4">צג דיגיטלי לבית הכנסת</h1>
+          <p className="text-2xl text-gray-700 mb-8">
+            <span className="font-bold">
+              {`תאריך: ${formatDate(currentTime)} | שעה: ${formatTime(currentTime)}`}
+            </span>
+          </p>
+          <button
+            onClick={() => navigate("/login")}
+            className="main-button shadow-lg"
+          >
+            מעבר לממשק מנהל
+          </button>
       </div>
     </div>
   );

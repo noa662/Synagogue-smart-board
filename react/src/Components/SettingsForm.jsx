@@ -8,16 +8,17 @@ import { Card } from 'primereact/card';
 import { Toast } from 'primereact/toast';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
-import axios from 'axios';
 import { DesignContext } from '../DesignProvider';
-import { uploadImage, saveSettings } from "../Services/settingsService";
+import { uploadImage, saveSettings } from '../Services/settingsService';
 
 const SettingsForm = () => {
   const { setSettings } = useContext(DesignContext);
 
   const [color, setColor] = useState('#6466f1');
   const [selectedFont, setSelectedFont] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(null); // URL to save
+  const [previewUrl, setPreviewUrl] = useState(null); // URL to preview
+  const [selectedFile, setSelectedFile] = useState(null); // file to upload
   const [uploading, setUploading] = useState(false);
   const toast = useRef(null);
 
@@ -37,39 +38,43 @@ const SettingsForm = () => {
     { name: 'תמונה 4', url: '/img/4.jpg' },
   ];
 
-  const handleFileUpload = async ({ files }) => {
+  const handleSelectFile = ({ files }) => {
     const file = files?.[0];
     if (!file) return;
 
-    setUploading(true);
-    try {
-      const imageUrl = await uploadImage(file, token);
-      setSelectedImage(imageUrl);
-      toast.current.show({ severity: 'success', summary: 'הצלחה', detail: 'תמונה הועלתה בהצלחה', life: 3000 });
-    } catch (err) {
-      toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'העלאת תמונה נכשלה', life: 3000 });
-    } finally {
-      setUploading(false);
-    }
+    setSelectedFile(file);
+    setPreviewUrl(URL.createObjectURL(file));
+    setSelectedImage(null);
   };
 
   const handleSubmit = async () => {
-    const themeColor = color.startsWith('#') ? color : `#${color}`;
-    const fontFamily = selectedFont?.name ? `'${selectedFont.name}', sans-serif` : "'Heebo', 'Arial', sans-serif";
-    const background = selectedImage ? `url(${selectedImage})` : "url('/img/3.jpg')";
-
-    const registrationData = {
-      themeColor,
-      font: fontFamily,
-      background,
-    };
+    setUploading(true);
 
     try {
+      let imageUrl = selectedImage;
+
+      if (selectedFile) {
+        imageUrl = await uploadImage(selectedFile, token);
+        setSelectedImage(imageUrl);
+      }
+
+      const themeColor = color.startsWith('#') ? color : `#${color}`;
+      const fontFamily = selectedFont?.name ? `'${selectedFont.name}', sans-serif` : "'Heebo', 'Arial', sans-serif";
+      const background = imageUrl ? `url(${imageUrl})` : "url('/img/3.jpg')";
+
+      const registrationData = {
+        themeColor,
+        font: fontFamily,
+        background,
+      };
+
       await saveSettings(registrationData, token);
       setSettings(registrationData);
       toast.current.show({ severity: 'success', summary: 'נשמר', detail: 'ההגדרות נשמרו בהצלחה', life: 3000 });
     } catch (err) {
       toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'שגיאה בשמירת ההגדרות', life: 3000 });
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -105,12 +110,16 @@ const SettingsForm = () => {
             {predefinedImages.map((img, idx) => (
               <div
                 key={idx}
-                onClick={() => setSelectedImage(img.url)}
+                onClick={() => {
+                  setSelectedImage(img.url);
+                  setPreviewUrl(img.url);
+                  setSelectedFile(null); // reset file
+                }}
                 className={classNames(
                   'cursor-pointer border-2 rounded-md overflow-hidden transition-all',
                   {
-                    'border-blue-500': selectedImage === img.url,
-                    'border-gray-300': selectedImage !== img.url,
+                    'border-blue-500': previewUrl === img.url,
+                    'border-gray-300': previewUrl !== img.url,
                   }
                 )}
                 style={{ width: '120px' }}
@@ -125,17 +134,17 @@ const SettingsForm = () => {
             accept="image/*"
             maxFileSize={7 * 1024 * 1024}
             customUpload
-            uploadHandler={handleFileUpload}
+            uploadHandler={handleSelectFile}
             chooseLabel="בחר קובץ"
             uploadLabel="העלה"
             cancelLabel="בטל"
           />
         </div>
 
-        {selectedImage && (
+        {previewUrl && (
           <div className="mt-3">
             <h4 className="mb-2">תמונה נבחרת:</h4>
-            <Image src={selectedImage} alt="תמונה נבחרת" width="250" preview />
+            <Image src={previewUrl} alt="תמונה נבחרת" width="250" preview />
           </div>
         )}
 

@@ -1,11 +1,9 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { InputText } from "primereact/inputtext";
 import { InputTextarea } from "primereact/inputtextarea";
 import { Button } from "primereact/button";
-import axios from 'axios';
-import { Toast } from 'primereact/toast';
-import { useRef } from 'react';
+import { Toast } from "primereact/toast";
 import { Card } from "primereact/card";
 
 const AddInquiry = () => {
@@ -35,15 +33,9 @@ const AddInquiry = () => {
             return;
         }
 
-        console.log("user.userName:", user.userName);
-        const inquiry = {
-            userName: user.username,
-            date: new Date().toISOString(),
-            subjectOfInquiry,
-            description
-        };
+        console.log("user.username:", user?.username);
 
-        if (!user || user.userName === "?" || user.userName === undefined) {
+        if (!user || user.username === "?" || user.username === undefined) {
             console.log("המשתמש לא מחובר למערכת");
             toast.current.show({
                 severity: 'warn',
@@ -64,13 +56,23 @@ const AddInquiry = () => {
             return;
         }
 
+        const inquiry = {
+            userName: user.username,
+            date: new Date().toISOString(),
+            subjectOfInquiry,
+            description
+        };
+
         try {
-            await axios.post("http://localhost:8080/inquiries", inquiry, {
+            await fetch("http://localhost:8080/inquiries", {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${token}`,
-                }
+                },
+                body: JSON.stringify(inquiry),
             });
+
             console.log("inquiry being sent:", inquiry);
             console.log("נשמר בהצלחה");
 
@@ -85,7 +87,6 @@ const AddInquiry = () => {
             setDescription('');
         } catch (err) {
             console.error("שגיאה בשליחת הפנייה:", err);
-            console.error("שגיאה מלאה:", err.response);
             toast.current.show({
                 severity: 'error',
                 summary: 'שגיאה',

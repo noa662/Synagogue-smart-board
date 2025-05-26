@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
+import axios from "axios";
+import { fetchZmanim } from "../Services/zmanimService";
 
 const TodaysTimes = () => {
     const [zmanim, setZmanim] = useState([]);
@@ -32,114 +33,130 @@ const TodaysTimes = () => {
         Sunset: "שקיעה",
         TemporalHour: "שעה זמנית",
         Tzais: "צאת הכוכבים",
-        Tzais72: "צאת הכוכבים 72 דקות"
+        Tzais72: "צאת הכוכבים 72 דקות",
     };
 
     useEffect(() => {
-        if (navigator.geolocation) {
+        const loadZmanim = () => {
+            if (!navigator.geolocation) {
+                const errMsg = "הדפדפן לא תומך בזיהוי מיקום";
+                setError(errMsg);
+                setLoading(false);
+                if (toast.current) {
+                    toast.current.show({
+                        severity: "error",
+                        summary: "שגיאה",
+                        detail: errMsg,
+                        life: 3000,
+                    });
+                }
+                return;
+            }
+
             navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const { latitude, longitude } = position.coords;
+                async ({ coords }) => {
                     try {
-                        const response = await axios.get('http://localhost:8080/times', {
-                            params: { lat: latitude, lon: longitude }
-                        });
+                        const basicZmanim = await fetchZmanim(coords.latitude, coords.longitude);
+                        if (!basicZmanim) throw new Error("Invalid response format");
 
-                        const contentType = response.headers['content-type'];
-                        if (contentType && contentType.includes('application/json')) {
-                            const basicZmanim = response.data.BasicZmanim;
-                            const formatted = Object.entries(basicZmanim)
-                                .filter(([key, value]) =>
+                        const formatted = Object.entries(basicZmanim)
+                            .filter(
+                                ([key, value]) =>
                                     zmanimTitles[key] &&
-                                    typeof value === 'string' &&
-                                    value.includes('T')
-                                )
-                                .map(([key, value]) => ({
-                                    key,
-                                    title: zmanimTitles[key],
-                                    time: formatTime(value)
-                                }));
+                                    typeof value === "string" &&
+                                    value.includes("T")
+                            )
+                            .map(([key, value]) => ({
+                                key,
+                                title: zmanimTitles[key],
+                                time: formatTime(value),
+                            }));
 
-                            setZmanim(formatted);
-                            setError(null);
-                        } else {
-                            const errMsg = "השרת לא החזיר נתונים בפורמט JSON";
-                            setError(errMsg);
-                            toast.current.show({ severity: 'error', summary: 'שגיאה', detail: errMsg, life: 5000 });
-                        }
+                        setZmanim(formatted);
+                        setError(null);
                     } catch (err) {
-                        const errMsg = "שגיאה בשליפת זמני היום";
+                        console.error("בעיה בשליפת זמני היום:", err);
+                        const errMsg = "בעיה בשליפת זמני היום";
                         setError(errMsg);
-                        toast.current.show({ severity: 'error', summary: 'שגיאה', detail: errMsg, life: 5000 });
+                        if (toast.current) {
+                            toast.current.show({
+                                severity: "error",
+                                summary: "שגיאה",
+                                detail: errMsg,
+                                life: 3000,
+                            });
+                        }
                     } finally {
                         setLoading(false);
                     }
                 },
-                () => {
+                (error) => {
+                    console.error("שגיאה בקבלת מיקום:", error);
                     const errMsg = "יש לאפשר גישה למיקום על מנת להציג זמני היום";
                     setError(errMsg);
-                    toast.current.show({ severity: 'warn', summary: 'אזהרה', detail: errMsg, life: 5000 });
+                    if (toast.current) {
+                        toast.current.show({
+                            severity: "warn",
+                            summary: "אזהרה",
+                            detail: errMsg,
+                            life: 3000,
+                        });
+                    }
                     setLoading(false);
                 }
             );
-        } else {
-            const errMsg = "הדפדפן לא תומך בזיהוי מיקום";
-            setError(errMsg);
-            toast.current.show({ severity: 'error', summary: 'שגיאה', detail: errMsg, life: 5000 });
-            setLoading(false);
-        }
+        };
+
+        loadZmanim();
     }, []);
 
     const formatTime = (time) => {
-        if (!time || typeof time !== 'string' || time.trim() === "") {
+        if (!time || typeof time !== "string" || time.trim() === "") {
             return "תאריך לא תקין";
         }
         try {
             const date = new Date(time.trim());
             if (isNaN(date.getTime())) return "תאריך לא תקין";
-            return date.toLocaleTimeString('he-IL', {
-                hour: '2-digit',
-                minute: '2-digit',
+            return date.toLocaleTimeString("he-IL", {
+                hour: "2-digit",
+                minute: "2-digit",
                 hour12: false,
-                timeZone: 'Asia/Jerusalem'
+                timeZone: "Asia/Jerusalem",
             });
         } catch {
             return "שגיאה בפורמט שעה";
         }
     };
 
-    if (loading) return <p className="text-center mt-4 text-lg">טוען זמני היום...</p>;
-    if (error && zmanim.length === 0) return <p className="text-center text-red-600 mt-4 text-lg">{error}</p>;
+    if (loading)
+        return (
+            <p className="text-center text-gray-600 text-xl">טוען זמני היום...</p>
+        );
+    if (error) return <p className="text-center text-red-600 text-xl">{error}</p>;
 
     return (
-        <div className="card w-full max-w-3xl mx-auto p-6 shadow-lg" dir="rtl" style={{ marginTop: '15vh', backgroundColor: '#f9fafb', borderRadius: '12px' }}>
-            <Toast ref={toast} position="top-center" />
-            <h2 className="text-2xl font-bold mb-6 text-gray-800 text-right">זמני היום</h2>
+        <div className="card p-4" dir="rtl" style={{ minWidth: "60rem" }}>
+            <h1 className="text-4xl font-bold text-center mb-6">זמני היום</h1>
             <DataTable
                 value={zmanim}
                 paginator
-                rows={10}
-                rowsPerPageOptions={[10, 20, 50]}
-                tableStyle={{ width: '100%', direction: 'rtl' }}
-                stripedRows
-                className="shadow-sm rounded-lg"
+                rows={6}
+                rowsPerPageOptions={[6, 12, 24]}
+                paginatorTemplate="PrevPageLink PageLinks NextPageLink RowsPerPageDropdown"
                 emptyMessage="אין זמני היום להצגה"
             >
                 <Column
                     field="title"
                     header="זמן"
-                    bodyClassName="text-right text-lg font-semibold text-gray-700"
-                    headerClassName="text-right text-lg font-semibold"
-                    style={{ minWidth: '60%' }}
+                    style={{ textAlign: "right", fontWeight: "bold", width: "50%" }}
                 />
                 <Column
                     field="time"
                     header="שעה"
-                    bodyClassName="text-right text-lg text-blue-700"
-                    headerClassName="text-right text-lg font-semibold"
-                    style={{ minWidth: '40%' }}
+                    style={{ textAlign: "center", fontWeight: "bold", width: "50%" }}
                 />
             </DataTable>
+            <Toast ref={toast} position="top-center" />
         </div>
     );
 };

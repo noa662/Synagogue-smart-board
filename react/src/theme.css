@@ -1,6 +1,6 @@
 :root {
   --main-color: #6466f1;
-  --accent-color: rgb(2, 248, 166);
+  --accent-color: rgb(10, 2, 248);
   --font: 'Heebo', sans-serif;
   --background-image: url('/img/3.jpg');
 }
@@ -13,22 +13,30 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   margin: 0;
+  padding-top: 70px;
   padding: 0;
 }
 
 /* כפתור כללי */
-.p-button {
+/* כפתור ראשי - משופר */
+.p-button,
+.main-button {
   background-color: var(--accent-color) !important;
-  color: black !important;
+  color: white !important;
   border: none;
   font-family: var(--font);
   font-weight: bold;
-  transition: background-color 0.3s;
+  font-size: 1.2rem;
+  padding: 1rem 2rem;
+  border-radius: 9999px; /* עיגול מלא */
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.p-button:hover {
-  background-color: var(--main-color) !important;
-  color: blue !important;
+.p-button:hover,
+.main-button:hover {
+  background-color: #4648c4 !important;
+  color: white !important;
+  transform: scale(1.05);
 }
 
 /* כפתור מותאם אישית */
@@ -80,4 +88,98 @@ body {
   background-color: #f3f4f6; /* bg-gray-100 */
   font-weight: bold;
   font-size: 1.1rem;
+}
+
+h1 {
+  color: white;
+  font-size: 3rem;      
+  font-weight: 900;      
+  font-family: 'Fantasy', cursive, sans-serif; 
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+  letter-spacing: 0.05em;  
+  margin-bottom: 1rem;     
+  user-select: none;     
+  transition: color 0.3s ease;
+}
+
+h1:hover {
+  color: #ffd700; 
+  cursor: default;
+}
+
+p {
+  color: white;
+  font-size: 1.5rem;           
+  font-weight: 600;          
+  font-family: 'Heebo', sans-serif; 
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  line-height: 1.6;     
+  margin-bottom: 1.5rem;   
+  user-select: none;         
+  transition: color 0.3s ease;
+}
+
+p:hover {
+  color: #a8c0ff;         
+  cursor: default;
+}
+
+/* למשל בקובץ theme.css */
+:root {
+  --main-color: #6466f1;
+}
+
+button,
+a {
+  background-color: var(--main-color);
+  color: white;
+}
+
+h1, h2, h3 {
+  color: var(--main-color);
+}
+
+/* צבע הכפתורים והטקסט של הדאטה-טייבל */
+.p-datatable .p-paginator {
+  background-color: #96999c; /* רקע נעים וכחול לדוגמה */
+  color: white;              /* טקסט לבן כדי שיהיה ניגודיות */
+  border-radius: 6px;
+  padding: 0.25rem 0;
+}
+
+.p-datatable .p-paginator .p-paginator-prev,
+.p-datatable .p-paginator .p-paginator-next,
+.p-datatable .p-paginator .p-paginator-page {
+  color: white !important;
+  border-color: white !important;
+}
+
+.p-datatable .p-paginator .p-paginator-prev:hover,
+.p-datatable .p-paginator .p-paginator-next:hover,
+.p-datatable .p-paginator .p-paginator-page.p-highlight {
+  background-color: #282a2b !important;
+  color: white !important;
+  border-color: #005f99 !important;
+}
+
+/* כללי ליישור ועיצוב */
+.p-datatable td,
+.p-datatable th {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* פסים מפורדים */
+.p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) {
+  background-color: #f4f6f8;
+}
+
+/* כותרות טבלה */
+.p-datatable-thead > tr > th {
+  background-color: #e2e8f0;
+  color: #1e293b;
+  font-weight: 700;
+  border-bottom: 2px solid #cbd5e1;
+  text-align: right !important;
 }
