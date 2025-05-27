@@ -20,6 +20,7 @@
     "kosher-zmanim": "^0.9.0",
     "mongoose": "^8.13.1",
     "multer": "^2.0.0",
+    "nodemailer": "^7.0.3",
     "nodemon": "^3.1.10"
   }
 }

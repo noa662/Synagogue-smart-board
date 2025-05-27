@@ -3,6 +3,7 @@ const User = require('../models/userModel');
 
 
 async function addUser(req, res) {
+    console.log("נתונים שהתקבלו ב-body:", req.body);
     try {
         const newUser = new User(req.body);
         await newUser.save();

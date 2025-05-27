@@ -36,13 +36,15 @@ const Register = () => {
       username,
       password,
       email,
-      role: selectedRole,
-      adminPassword: selectedRole === "admin" ? adminPassword : null,
+      role: selectedRole === "admin" || selectedRole === "user" ? selectedRole : undefined,
+        adminPassword: selectedRole === "admin" ? adminPassword : null,
     };
 
     try {
       const response = await registerUser(registrationData);
-      const { token, ...userData } = response.data;
+      console.log("response שהתקבל:", response);
+      const userData = response.user; // כאשר response = response.data
+
 
       toast.current.show({
         severity: "success",
@@ -51,7 +53,7 @@ const Register = () => {
         life: 3000,
       });
 
-      localStorage.setItem("token", token);
+     // localStorage.setItem("token", token);
       dispatch(createUser(userData));
 
       window.location.href = selectedRole === "admin" ? "/admin" : "/";
