@@ -53,9 +53,13 @@ const Events = () => {
   };
 
   return (
-    <div className="p-4" dir="rtl" style={{ minHeight: 'calc(100vh - 100px)' }}>
+    <div
+      className="p-4"
+      dir="rtl"
+      style={{ minHeight: 'calc(100vh - 100px)', marginTop: '10vh', textAlign: 'center' }}
+    >
       <Toast ref={toast} position="top-center" />
-      <h1 className="text-4xl font-bold text-center mb-6">רשימת אירועים קרובים</h1>
+      <h2>רשימת אירועים קרובים</h2>
 
       <DataTable
         value={events}

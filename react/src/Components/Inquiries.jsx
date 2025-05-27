@@ -83,7 +83,10 @@ const Inquiries = () => {
   };
 
   return (
-    <div className="card">
+    <div 
+    className="card"
+     style={{ paddingTop: "15vh", textAlign: "center"}}
+    >
       <Toast ref={toast} position="top-center" />
       <h3>פניות שהתקבלו</h3>
       <DataTable

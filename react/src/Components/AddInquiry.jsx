@@ -97,40 +97,41 @@ const AddInquiry = () => {
     };
 
     return (
-        <Card title="טופס שליחת פנייה" className="w-full max-w-[500px] shadow-3">
-            <div className="card flex flex-column gap-3 max-w-md mx-auto mt-6" dir="rtl">
-                <Toast ref={toast} position="top-center" />
+        <div style={{ paddingTop: "10vh" }} className="flex justify-center px-4">
+            <Card title="טופס שליחת פנייה" className="w-full max-w-[500px] shadow-3">
+                <div className="card flex flex-column gap-3 max-w-md mx-auto mt-6" dir="rtl">
+                    <Toast ref={toast} position="top-center" />
+                    <div>
+                        <label htmlFor="subject" className="block mb-2">נושא הפנייה</label>
+                        <InputText
+                            id="subject"
+                            value={subjectOfInquiry}
+                            onChange={(e) => setSubjectOfInquiry(e.target.value)}
+                            className="w-full"
+                        />
+                    </div>
 
-                <div>
-                    <label htmlFor="subject" className="block mb-2">נושא הפנייה</label>
-                    <InputText
-                        id="subject"
-                        value={subjectOfInquiry}
-                        onChange={(e) => setSubjectOfInquiry(e.target.value)}
-                        className="w-full"
+                    <div>
+                        <label htmlFor="description" className="block mb-2">תיאור</label>
+                        <InputTextarea
+                            id="description"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                            rows={5}
+                            className="w-full"
+                            autoResize
+                        />
+                    </div>
+
+                    <Button
+                        label="שלח פנייה"
+                        icon="pi pi-send"
+                        className="w-full mt-4"
+                        onClick={handleSubmit}
                     />
                 </div>
-
-                <div>
-                    <label htmlFor="description" className="block mb-2">תיאור</label>
-                    <InputTextarea
-                        id="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows={5}
-                        className="w-full"
-                        autoResize
-                    />
-                </div>
-
-                <Button
-                    label="שלח פנייה"
-                    icon="pi pi-send"
-                    className="w-full mt-4"
-                    onClick={handleSubmit}
-                />
-            </div>
-        </Card>
+            </Card>
+        </div>
     );
 };
 

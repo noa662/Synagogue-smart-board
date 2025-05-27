@@ -1,4 +1,4 @@
-import { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import { ColorPicker } from 'primereact/colorpicker';
 import { Dropdown } from 'primereact/dropdown';
 import { FileUpload } from 'primereact/fileupload';
@@ -8,35 +8,65 @@ import { Card } from 'primereact/card';
 import { Toast } from 'primereact/toast';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
-import { DesignContext } from '../DesignProvider';
 import { uploadImage, saveSettings } from '../Services/settingsService';
+import { DesignContext } from '../DesignProvider';
+
+const fonts = [
+  { name: 'Heebo', code: 'HE' },
+  { name: 'Arial', code: 'AR' },
+  { name: 'Rubik', code: 'RU' },
+  { name: 'Open Sans', code: 'OS' },
+];
+
+const predefinedImages = [
+  { name: 'תמונה 1', url: '/img/1.png' },
+  { name: 'תמונה 2', url: '/img/2.jpg' },
+  { name: 'תמונה 3', url: '/img/3.jpg' },
+  { name: 'תמונה 4', url: '/img/4.jpg' },
+];
 
 const SettingsForm = () => {
-  const { setSettings } = useContext(DesignContext);
+  const { settings, setSettings } = useContext(DesignContext);
 
-  const [color, setColor] = useState('#6466f1');
-  const [selectedFont, setSelectedFont] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null); // URL to save
-  const [previewUrl, setPreviewUrl] = useState(null); // URL to preview
-  const [selectedFile, setSelectedFile] = useState(null); // file to upload
+  const [color, setColor] = useState(settings.themeColor || '#6466f1');
+
+  // פונקציה למציאת פונט מתוך מחרוזת ה-font ב-settings
+  const findFontByName = (fontString) => {
+    if (!fontString) return null;
+    const match = fontString.match(/'([^']+)'/);
+    if (!match) return null;
+    const fontName = match[1];
+    return fonts.find(f => f.name === fontName) || null;
+  };
+
+  const [selectedFont, setSelectedFont] = useState(findFontByName(settings.font));
+
+  // לפענח את ה-url מתוך background ב-settings
+  const extractBackgroundUrl = (backgroundString) => {
+    if (!backgroundString) return null;
+    const match = backgroundString.match(/url\(([^)]+)\)/);
+    if (!match) return null;
+    return match[1].replace(/['"]/g, '');
+  };
+
+  const [selectedImage, setSelectedImage] = useState(extractBackgroundUrl(settings.background));
+  const [previewUrl, setPreviewUrl] = useState(selectedImage);
+
+  const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const toast = useRef(null);
 
   const token = localStorage.getItem('token');
 
-  const fonts = [
-    { name: 'Heebo', code: 'HE' },
-    { name: 'Arial', code: 'AR' },
-    { name: 'Rubik', code: 'RU' },
-    { name: 'Open Sans', code: 'OS' },
-  ];
-
-  const predefinedImages = [
-    { name: 'תמונה 1', url: '/img/1.png' },
-    { name: 'תמונה 2', url: '/img/2.jpg' },
-    { name: 'תמונה 3', url: '/img/3.jpg' },
-    { name: 'תמונה 4', url: '/img/4.jpg' },
-  ];
+  // עדכון ה-state המקומי כאשר settings משתנים (אם השתנה במקום אחר)
+  useEffect(() => {
+    setColor(settings.themeColor || '#6466f1');
+    setSelectedFont(findFontByName(settings.font));
+    const bgUrl = extractBackgroundUrl(settings.background);
+    setSelectedImage(bgUrl);
+    setPreviewUrl(bgUrl);
+    setSelectedFile(null);
+  }, [settings]);
 
   const handleSelectFile = ({ files }) => {
     const file = files?.[0];
@@ -69,7 +99,7 @@ const SettingsForm = () => {
       };
 
       await saveSettings(registrationData, token);
-      setSettings(registrationData);
+      setSettings(registrationData);  // מעדכן את הקונטקסט
       toast.current.show({ severity: 'success', summary: 'נשמר', detail: 'ההגדרות נשמרו בהצלחה', life: 3000 });
     } catch (err) {
       toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'שגיאה בשמירת ההגדרות', life: 3000 });
@@ -79,7 +109,10 @@ const SettingsForm = () => {
   };
 
   return (
-    <div className="p-4">
+    <div
+      className="p-4"
+      style={{ paddingTop: "10vh" }}
+    >
       <Toast ref={toast} position="top-center" />
       <Card title="הגדרות עיצוב" className="shadow-3 border-round-lg p-4">
         <div className="mb-5">

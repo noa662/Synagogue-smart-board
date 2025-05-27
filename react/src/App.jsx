@@ -12,6 +12,7 @@ import AddEvent from "./Components/AddEvent";
 import UpdateTimes from "./Components/UpdateTimes";
 import Events from "./Components/Events";
 import AddInquiry from "./Components/AddInquiry";
+import DefaultAdminPage from "./Components/DefaultAdminPage";
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createUser } from "./Store/UserSlice";
@@ -53,6 +54,7 @@ const App = () => {
       </Route>
       {/* תפריט מנהל */}
       <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<DefaultAdminPage />} />
         <Route path="inquiries" element={<Inquiries />} />
         <Route path="updateTimes" element={<UpdateTimes />} />
         <Route path="addEvent" element={<AddEvent />} />

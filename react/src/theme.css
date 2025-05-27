@@ -1,185 +1,186 @@
 :root {
-  --main-color: #6466f1;
-  --accent-color: rgb(10, 2, 248);
-  --font: 'Heebo', sans-serif;
-  --background-image: url('/img/3.jpg');
+  --main-color: #5a67d8; /* סגול עדין ונעים */
+  --accent-color: #3182ce; /* כחול קליל להדגשות */
+  --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --font-primary: 'Heebo', sans-serif;
+  --font-heading: 'Poppins', sans-serif;
+  --font-mono: 'Fira Mono', monospace;
+  --main-background: var(--background-gradient);
+  --text-primary: #5e6e8d; /* אפור כהה לקריאה נוחה */
+  --text-secondary: #8c9ebd; /* אפור בינוני לכיתובים משניים */
+  --text-inverse: #ffffff;
 }
 
 body {
-  font-family: var(--font);
-  color: var(--main-color);
-  background: var(--background-image);
+  font-family: var(--font-primary);
+  color: var(--text-primary);
+  background: var(--main-background);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   margin: 0;
-  padding-top: 70px;
-  padding: 0;
+  padding: 0 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* כפתור כללי */
-/* כפתור ראשי - משופר */
-.p-button,
-.main-button {
-  background-color: var(--accent-color) !important;
-  color: white !important;
-  border: none;
-  font-family: var(--font);
-  font-weight: bold;
-  font-size: 1.2rem;
-  padding: 1rem 2rem;
-  border-radius: 9999px; /* עיגול מלא */
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
+/* טיפוגרפיה */
 
-.p-button:hover,
-.main-button:hover {
-  background-color: #4648c4 !important;
-  color: white !important;
-  transform: scale(1.05);
-}
-
-/* כפתור מותאם אישית */
-.custom-button {
-  color: black !important;
-  border: 2px solid red !important;
-  background-color: white !important;
-  font-weight: bold;
-  transition: all 0.3s;
-}
-
-.custom-button:hover {
-  background-color: red !important;
-  color: white !important;
-}
-
-/* שדרוג נוסף: כרטיס */
-.p-card {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 1rem;
-  padding: 2rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-}
-
-/* תוויות וצורות כלליות */
-label {
-  color: #333;
-  font-weight: 500;
-}
-
-:root {
-  --main-color: #6466f1;
-  --font: 'Heebo', sans-serif;
-}
-
-body {
-  font-family: var(--font);
-  color: #333;
-  background: url('/img/3.jpg') no-repeat center center fixed;
-  background-size: cover;
-}
-
-.p-datatable {
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.p-datatable-thead > tr > th {
-  background-color: #f3f4f6; /* bg-gray-100 */
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-h1 {
-  color: white;
-  font-size: 3rem;      
-  font-weight: 900;      
-  font-family: 'Fantasy', cursive, sans-serif; 
-  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
-  letter-spacing: 0.05em;  
-  margin-bottom: 1rem;     
-  user-select: none;     
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-primary);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.03em;
+  user-select: none;
   transition: color 0.3s ease;
 }
 
-h1:hover {
-  color: #ffd700; 
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.25rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h1:hover,
+h2:hover,
+h3:hover {
+  color: var(--accent-color);
   cursor: default;
 }
 
 p {
-  color: white;
-  font-size: 1.5rem;           
-  font-weight: 600;          
-  font-family: 'Heebo', sans-serif; 
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
-  line-height: 1.6;     
-  margin-bottom: 1.5rem;   
-  user-select: none;         
-  transition: color 0.3s ease;
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  user-select: text;
 }
 
-p:hover {
-  color: #a8c0ff;         
-  cursor: default;
+p strong {
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
-/* למשל בקובץ theme.css */
-:root {
-  --main-color: #6466f1;
+span {
+  /* שימוש לקטעים קטנים להדגשה או שכתוב */
+  color: var(--accent-color);
+  font-weight: 600;
 }
 
-button,
-a {
-  background-color: var(--main-color);
-  color: white;
+/* כפתורים */
+
+.p-button,
+.main-button {
+  background-color: var(--main-color) !important;
+  color: var(--text-inverse) !important;
+  border: none;
+  font-family: var(--font-primary);
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 1rem 2rem;
+  border-radius: 9999px;
+  box-shadow: 0 4px 6px rgb(90 103 216 / 0.4);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
 }
 
-h1, h2, h3 {
+.p-button:hover,
+.main-button:hover {
+  background-color: #434190 !important; /* קצת כהה יותר */
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgb(90 103 216 / 0.6);
+  cursor: pointer;
+}
+
+/* כפתור מותאם אישית */
+.custom-button {
+  color: var(--main-color) !important;
+  border: 2px solid var(--main-color) !important;
+  background-color: transparent !important;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  border-radius: 12px;
+  padding: 0.5rem 1.5rem;
+}
+
+.custom-button:hover {
+  background-color: var(--main-color) !important;
+  color: var(--text-inverse) !important;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgb(90 103 216 / 0.4);
+}
+
+/* כרטיסים */
+.p-card {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transition: box-shadow 0.3s ease;
+}
+
+.p-card:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18);
+}
+
+/* טבלאות */
+.p-datatable {
+  border-radius: 16px;
+  overflow: hidden;
+  font-family: var(--font-primary);
+}
+
+.p-datatable-thead > tr > th {
+  background-color: #e0e7ff;
   color: var(--main-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-align: right !important;
+  border-bottom: 3px solid #c3dafe;
+  padding: 1rem;
 }
 
-/* צבע הכפתורים והטקסט של הדאטה-טייבל */
+.p-datatable td,
+.p-datatable th {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) {
+  background-color: #f0f4ff;
+}
+
+/* paginator */
 .p-datatable .p-paginator {
-  background-color: #96999c; /* רקע נעים וכחול לדוגמה */
-  color: white;              /* טקסט לבן כדי שיהיה ניגודיות */
-  border-radius: 6px;
-  padding: 0.25rem 0;
+  background-color: var(--main-color);
+  color: var(--text-inverse);
+  border-radius: 8px;
+  padding: 0.5rem 0;
 }
 
 .p-datatable .p-paginator .p-paginator-prev,
 .p-datatable .p-paginator .p-paginator-next,
 .p-datatable .p-paginator .p-paginator-page {
-  color: white !important;
-  border-color: white !important;
+  color: var(--text-inverse) !important;
+  border-color: var(--text-inverse) !important;
+  font-weight: 600;
 }
 
 .p-datatable .p-paginator .p-paginator-prev:hover,
 .p-datatable .p-paginator .p-paginator-next:hover,
 .p-datatable .p-paginator .p-paginator-page.p-highlight {
-  background-color: #282a2b !important;
-  color: white !important;
-  border-color: #005f99 !important;
-}
-
-/* כללי ליישור ועיצוב */
-.p-datatable td,
-.p-datatable th {
-  padding: 0.75rem 1rem;
-  font-size: 1rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-/* פסים מפורדים */
-.p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) {
-  background-color: #f4f6f8;
-}
-
-/* כותרות טבלה */
-.p-datatable-thead > tr > th {
-  background-color: #e2e8f0;
-  color: #1e293b;
-  font-weight: 700;
-  border-bottom: 2px solid #cbd5e1;
-  text-align: right !important;
+  background-color: #2c3092 !important;
+  color: var(--text-inverse) !important;
+  border-color: #2c3092 !important;
+  cursor: pointer;
 }

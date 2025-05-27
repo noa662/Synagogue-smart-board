@@ -51,8 +51,6 @@ const UpdateTimes = () => {
         try {
             await postPrayerTimes(prayerTime, token);
             toast.current.show({ severity: 'success', summary: 'הצלחה', detail: 'הזמנים נשמרו בהצלחה', life: 3000 });
-
-            // ניקוי השדות אחרי שמירה
             setDate(null);
             setShacharit('');
             setMincha('');
@@ -64,31 +62,36 @@ const UpdateTimes = () => {
     };
 
     return (
-        <Card title="הוספת זמני תפילה" className="w-full max-w-[500px] shadow-3">
-            <Toast ref={toast} position="top-center" />
-            <div className="card flex justify-content-center">
-                <Calendar value={date} onChange={(e) => setDate(e.value)} placeholder="בחר תאריך" />
-            </div>
-            <br />
-            <div className="card flex justify-content-center">
-                <InputText value={shacharit} onChange={(e) => setShacharit(e.target.value)} placeholder="שחרית" />
-            </div>
-            <br />
-            <div className="card flex justify-content-center">
-                <InputText value={mincha} onChange={(e) => setMincha(e.target.value)} placeholder="מנחה" />
-            </div>
-            <br />
-            <div className="card flex justify-content-center">
-                <InputText value={maariv} onChange={(e) => setMaariv(e.target.value)} placeholder="ערבית" />
-            </div>
-            <br />
-            <Button
-                label="שמור"
-                icon="pi pi-user-plus"
-                className="w-full mt-4"
-                onClick={handleSubmit}
-            />
-        </Card>
+        <div
+            style={{ paddingTop: "14vh" }}
+            className="flex justify-center px-4"
+        >
+            <Card title="הוספת זמני תפילה" className="w-full max-w-[500px] shadow-3">
+                <Toast ref={toast} position="top-center" />
+                <div className="card flex justify-content-center">
+                    <Calendar value={date} onChange={(e) => setDate(e.value)} placeholder="בחר תאריך" />
+                </div>
+                <br />
+                <div className="card flex justify-content-center">
+                    <InputText value={shacharit} onChange={(e) => setShacharit(e.target.value)} placeholder="שחרית" />
+                </div>
+                <br />
+                <div className="card flex justify-content-center">
+                    <InputText value={mincha} onChange={(e) => setMincha(e.target.value)} placeholder="מנחה" />
+                </div>
+                <br />
+                <div className="card flex justify-content-center">
+                    <InputText value={maariv} onChange={(e) => setMaariv(e.target.value)} placeholder="ערבית" />
+                </div>
+                <br />
+                <Button
+                    label="שמור"
+                    icon="pi pi-user-plus"
+                    className="w-full mt-4"
+                    onClick={handleSubmit}
+                />
+            </Card>
+        </div>
     );
 }
 

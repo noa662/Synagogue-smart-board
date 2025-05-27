@@ -67,7 +67,10 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-content-center mt-8 px-4">
+    <div
+      className="flex justify-content-center mt-8 px-4"
+      style={{ paddingTop: "3vh" }}
+    >
       <Toast ref={toast} />
       <Card title="הרשמה" className="w-full max-w-[500px] shadow-4 p-6 border-round-xl">
         <div className="flex flex-column gap-4">

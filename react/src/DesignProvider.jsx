@@ -1,48 +1,28 @@
-// import designSettings from './designSettings';
-
-// const DesignProvider = ({ children }) => {
-//     const rootStyle = {
-//         '--font': designSettings.font,
-//         '--color': designSettings.color,
-//         '--background': designSettings.background,
-//     };
-//     return <div style={rootStyle}>{children}</div>;
-// };
-
-// export default DesignProvider;
-
-import { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import React, { createContext, useEffect, useState } from 'react';
 
 export const DesignContext = createContext();
 
-const DesignProvider = ({ children }) => {
-  const [settings, setSettings] = useState(null);
+export function DesignProvider({ children }) {
+  // טען את ההגדרות מ-localStorage אם יש, אחרת ברירת מחדל
+  const [settings, setSettings] = useState(() => {
+    const savedSettings = localStorage.getItem('designSettings');
+    return savedSettings
+      ? JSON.parse(savedSettings)
+      : {
+          themeColor: '#6466f1',
+          font: "'Heebo', sans-serif",
+          background: "url('/img/3.jpg')",
+        };
+  });
 
-  useEffect(() => {
-    const fetchSettings = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:8080/settings", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setSettings(response.data);
-      } catch (err) {
-        console.error("שגיאה בשליפת ההגדרות", err);
-      }
-    };
-
-    fetchSettings();
-  }, []);
-
-  // Apply styles to the DOM when settings change
+  // כשיש שינוי ב-settings, שמור גם ב-localStorage ועדכן CSS variables
   useEffect(() => {
     if (settings) {
-      document.body.style.backgroundImage = settings.background;
-      document.body.style.fontFamily = settings.font;
-      document.documentElement.style.setProperty('--main-color', settings.color);
+      localStorage.setItem('designSettings', JSON.stringify(settings));
+      const root = document.documentElement;
+      root.style.setProperty('--main-color', settings.themeColor);
+      root.style.setProperty('--font', settings.font);
+      root.style.setProperty('--main-background', settings.background);
     }
   }, [settings]);
 
@@ -51,6 +31,4 @@ const DesignProvider = ({ children }) => {
       {children}
     </DesignContext.Provider>
   );
-};
-
-export default DesignProvider;
+}

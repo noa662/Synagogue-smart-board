@@ -135,7 +135,11 @@ const TodaysTimes = () => {
     if (error) return <p className="text-center text-red-600 text-xl">{error}</p>;
 
     return (
-        <div className="card p-4" dir="rtl" style={{ minWidth: "60rem" }}>
+        <div
+            className="card p-4"
+            dir="rtl"
+            style={{ minWidth: "60rem", marginTop: "10vh" }}
+        >
             <h1 className="text-4xl font-bold text-center mb-6">זמני היום</h1>
             <DataTable
                 value={zmanim}

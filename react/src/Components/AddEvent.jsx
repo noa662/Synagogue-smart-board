@@ -44,7 +44,7 @@ const AddEvent = () => {
     };
 
     try {
-      await addEvent(event, token); // שימוש בפונקציה מהservice
+      await addEvent(event, token);
       toast.current.show({
         severity: "success",
         summary: "נשמר",
@@ -52,7 +52,6 @@ const AddEvent = () => {
         life: 3000,
       });
 
-      // איפוס שדות
       setEventName("");
       setDate(null);
       setTime(null);
@@ -69,9 +68,10 @@ const AddEvent = () => {
   };
 
   return (
+    <div style={{ paddingTop: "10vh" }} className="flex justify-center px-4">
     <Card title="הוספת אירוע" className="w-full max-w-[500px] shadow-3">
       <Toast ref={toast} position="top-center" />
-      <div className="card flex justify-content-center">
+      <div className="card flex justify-content-center ">
         <InputText
           value={eventName}
           onChange={(e) => setEventName(e.target.value)}
@@ -105,6 +105,7 @@ const AddEvent = () => {
       <br />
       <Button label="שמור" icon="pi pi-user-plus" className="w-full mt-4" onClick={handleSubmit} />
     </Card>
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import App from './App.jsx';
 import 'primereact/resources/themes/lara-light-blue/theme.css';
 import 'primeicons/primeicons.css';
 import { PrimeReactProvider } from 'primereact/api';
@@ -13,7 +13,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import './theme.css';
-import DesignProvider from './DesignProvider';
+import { DesignProvider } from './DesignProvider';
 
 const store = configureStore({
   reducer: {
@@ -22,15 +22,15 @@ const store = configureStore({
 });
 
 createRoot(document.getElementById('root')).render(
-  <DesignProvider>
-    <StrictMode>
-      <Provider store={store}>
+  <StrictMode>
+    <Provider store={store}>
+      <DesignProvider>
         <PrimeReactProvider>
           <BrowserRouter>
             <App />
           </BrowserRouter>
         </PrimeReactProvider>
-      </Provider>
-    </StrictMode>
-  </DesignProvider>
+      </DesignProvider>
+    </Provider>
+  </StrictMode>
 );

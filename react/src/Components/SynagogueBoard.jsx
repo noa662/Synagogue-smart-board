@@ -32,11 +32,11 @@ const SynagogueBoard = () => {
   return (
     <div
       dir="rtl"
-      className="min-h-screen h-screen w-screen overflow-hidden bg-blue-50 p-6 text-center font-sans flex flex-col justify-center items-center mt=20"
+      className="min-h-screen h-screen w-screen overflow-hidden bg-blue-50 p-6 text-center font-sans flex flex-col justify-center items-center"
     >
         <div className="text-center max-w-md w-full mx-auto">
-          <h1 className="text-4xl font-bold mb-4">צג דיגיטלי לבית הכנסת</h1>
-          <p className="text-2xl text-gray-700 mb-8">
+          <h1>צג דיגיטלי לבית הכנסת</h1>
+          <p>
             <span className="font-bold">
               {`תאריך: ${formatDate(currentTime)} | שעה: ${formatTime(currentTime)}`}
             </span>
