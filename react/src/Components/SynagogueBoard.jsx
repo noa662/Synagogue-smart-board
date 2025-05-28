@@ -1,33 +1,9 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useCurrentDateTime } from "../Hooks/useCurrentDateTime";
 
 const SynagogueBoard = () => {
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const { formattedDate, formattedTime } = useCurrentDateTime();
   const navigate = useNavigate();
-
-  // עדכון השעה כל שנייה
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const formatTime = (date) => {
-    return date.toLocaleTimeString("he-IL", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-  };
-
-  const formatDate = (date) => {
-    return date.toLocaleDateString("he-IL", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  };
 
   return (
     <div
@@ -38,7 +14,7 @@ const SynagogueBoard = () => {
         <h1>צג דיגיטלי לבית הכנסת</h1>
         <p>
           <span className="font-bold">
-            {`תאריך: ${formatDate(currentTime)} | שעה: ${formatTime(currentTime)}`}
+            {`תאריך: ${formattedDate} | שעה: ${formattedTime}`}
           </span>
         </p>
         <button
