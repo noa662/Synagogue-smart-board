@@ -27,7 +27,6 @@ const predefinedImages = [
 
 const SettingsForm = () => {
   const { settings, setSettings } = useContext(DesignContext);
-
   const [color, setColor] = useState(settings.themeColor || '#6466f1');
 
   // פונקציה למציאת פונט מתוך מחרוזת ה-font ב-settings
@@ -99,7 +98,7 @@ const SettingsForm = () => {
       };
 
       await saveSettings(registrationData, token);
-      setSettings(registrationData);  // מעדכן את הקונטקסט
+      setSettings(registrationData); 
       toast.current.show({ severity: 'success', summary: 'נשמר', detail: 'ההגדרות נשמרו בהצלחה', life: 3000 });
     } catch (err) {
       toast.current.show({ severity: 'error', summary: 'שגיאה', detail: 'שגיאה בשמירת ההגדרות', life: 3000 });
@@ -146,7 +145,7 @@ const SettingsForm = () => {
                 onClick={() => {
                   setSelectedImage(img.url);
                   setPreviewUrl(img.url);
-                  setSelectedFile(null); // reset file
+                  setSelectedFile(null); 
                 }}
                 className={classNames(
                   'cursor-pointer border-2 rounded-md overflow-hidden transition-all',

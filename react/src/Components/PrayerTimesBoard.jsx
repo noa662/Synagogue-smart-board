@@ -1,20 +1,21 @@
 import { Card } from 'primereact/card';
 import { useEffect, useState, useRef } from "react";
-import axios from "axios";
 import { Toast } from 'primereact/toast';
 import { getPrayerTimesByDate } from "../Services/prayerService";
-
 
 const PrayerTimesBoard = () => {
   const [prayerTimes, setPrayerTimes] = useState(null);
   const [error, setError] = useState(null);
   const toast = useRef(null);
 
+  const today = new Date();
+
   useEffect(() => {
     const fetchPrayerTimes = async () => {
+      const isoDate = today.toISOString().split("T")[0];
+      console.log("Function called with date:", isoDate);
       try {
-        const today = new Date().toISOString().split("T")[0];
-        const data = await getPrayerTimesByDate(today);
+        const data = await getPrayerTimesByDate(isoDate);
         setPrayerTimes(data);
         setError(null);
       } catch (err) {
@@ -34,10 +35,21 @@ const PrayerTimesBoard = () => {
     return () => clearInterval(interval);
   }, []);
 
-
   if (!prayerTimes && !error) {
     return <p className="text-center text-gray-600 text-xl">טוען זמני תפילה...</p>;
   }
+
+  // כותרת בכרטיס עם עיצוב מרכזי
+  const cardHeader = (
+    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+      <h2 style={{ fontSize: '2.5rem', fontWeight: 'bold', margin: 0, color: '#3b3b98' }}>
+        זמני תפילה ליום
+      </h2>
+      <p style={{ fontSize: '1.5rem', color: '#6c757d', margin: 0 }}>
+        {today.toLocaleDateString('he-IL')}
+      </p>
+    </div>
+  );
 
   return (
     <div
@@ -46,14 +58,14 @@ const PrayerTimesBoard = () => {
       style={{ paddingTop: "10vh" }}
     >
       <Toast ref={toast} position="top-center" />
-      <Card title={<span className="text-3xl font-bold">זמני תפילה</span>} className="shadow-2xl border-round-xl p-6">
+      <Card header={cardHeader} className="shadow-2xl border-round-xl p-6">
         {error ? (
-          <p className="text-red-600 text-xl">{error}</p>
+          <p className="text-red-600 text-xl" style={{ textAlign: 'center' }}>{error}</p>
         ) : (
-          <ul className="list-none p-0 m-0 space-y-4 text-2xl text-gray-900 leading-relaxed">
-            <li><strong className="text-3xl">שחרית:</strong> <span className="text-3xl text-blue-700">{prayerTimes.shacharit}</span></li>
-            <li><strong className="text-3xl">מנחה:</strong> <span className="text-3xl text-green-700">{prayerTimes.mincha}</span></li>
-            <li><strong className="text-3xl">ערבית:</strong> <span className="text-3xl text-purple-700">{prayerTimes.maariv}</span></li>
+          <ul className="list-none p-0 m-0 space-y-4 text-2xl text-gray-900 leading-relaxed" style={{ textAlign: 'center' }}>
+            <li><strong style={{ fontSize: '2.8rem' }}>שחרית:</strong> <span style={{ fontSize: '2.8rem', color: '#3182ce' }}>{prayerTimes.shacharit}</span></li>
+            <li><strong style={{ fontSize: '2.8rem' }}>מנחה:</strong> <span style={{ fontSize: '2.8rem', color: '#38a169' }}>{prayerTimes.mincha}</span></li>
+            <li><strong style={{ fontSize: '2.8rem' }}>ערבית:</strong> <span style={{ fontSize: '2.8rem', color: '#805ad5' }}>{prayerTimes.maariv}</span></li>
           </ul>
         )}
       </Card>

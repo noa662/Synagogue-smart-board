@@ -4,7 +4,7 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { Dialog } from "primereact/dialog";
 import { Toast } from "primereact/toast";
-import { fetchInquiries, deleteInquiryById } from "../Services/inquiryService"; 
+import { fetchInquiries, deleteInquiryById } from "../Services/inquiryService";
 
 const Inquiries = () => {
   const [inquiries, setInquiries] = useState([]);
@@ -83,9 +83,9 @@ const Inquiries = () => {
   };
 
   return (
-    <div 
-    className="card"
-     style={{ paddingTop: "15vh", textAlign: "center"}}
+    <div
+      className="card"
+      style={{ paddingTop: "10vh", textAlign: "center" }}
     >
       <Toast ref={toast} position="top-center" />
       <h3>פניות שהתקבלו</h3>

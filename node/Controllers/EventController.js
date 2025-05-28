@@ -28,7 +28,6 @@ async function deleteEvent(req, res) {
 };
 
 async function getAllEvents(req, res) {
-    console.log("נכנס לפונקציההה")
     try {
         const events = await Event.find()
             .select();

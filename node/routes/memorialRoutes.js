@@ -3,10 +3,10 @@ const { addMemorial, deleteMemorial, getAllMemorials, updateMemorial, getMemoria
 const verifyJWT = require("../middleware/verifyJWT")
 const router = express.Router();
 
-router.get("/", getAllMemorials);  // שליפת כל האנדרטאות
-router.get("/:id", getMemorialById);  //שליפת אנדרטה ספציפית לפי ID
-router.post("/",verifyJWT, addMemorial);  // יצירת אנדרטה חדשה
-router.put("/:id",verifyJWT, updateMemorial);  // עדכון אנדרטה
-router.delete("/:id",verifyJWT, deleteMemorial);  // מחיקת אנדרטה
+router.get("/", getAllMemorials);
+router.get("/:id", getMemorialById);
+router.post("/", verifyJWT, addMemorial);
+router.put("/:id", verifyJWT, updateMemorial);
+router.delete("/:id", verifyJWT, deleteMemorial);
 
 module.exports = router;

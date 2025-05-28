@@ -3,10 +3,10 @@ const { addInquiry, deleteInquiry, updateInquiry, getAllInquies, getInquiryById 
 const verifyJWT = require("../middleware/verifyJWT")
 const router = express.Router();
 
-router.get("/", getAllInquies);  // שליפת כל הפניות
-router.get("/:id", getInquiryById);  //שליפת פנייה ספציפי לפי ID
-router.post("/", addInquiry);  // יצירת פנייה חדשה
-router.put("/:id", updateInquiry);  // עדכון פנייה
-router.delete("/:id", deleteInquiry);  // מחיקת פנייה
+router.get("/", getAllInquies);  
+router.get("/:id", getInquiryById); 
+router.post("/", addInquiry);  
+router.put("/:id", updateInquiry);  
+router.delete("/:id", deleteInquiry); 
 
 module.exports = router;

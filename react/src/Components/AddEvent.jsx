@@ -69,42 +69,42 @@ const AddEvent = () => {
 
   return (
     <div style={{ paddingTop: "10vh" }} className="flex justify-center px-4">
-    <Card title="הוספת אירוע" className="w-full max-w-[500px] shadow-3">
-      <Toast ref={toast} position="top-center" />
-      <div className="card flex justify-content-center ">
-        <InputText
-          value={eventName}
-          onChange={(e) => setEventName(e.target.value)}
-          placeholder="שם אירוע"
-        />
-      </div>
-      <br />
-      <div className="card flex justify-content-center">
-        <Calendar value={date} onChange={(e) => setDate(e.value)} placeholder="בחר תאריך" />
-      </div>
-      <br />
-      <div className="card flex justify-content-center">
-        <Calendar
-          value={time}
-          onChange={(e) => setTime(e.value)}
-          timeOnly
-          hourFormat="24"
-          placeholder="בחר שעה"
-        />
-      </div>
-      <br />
-      <div className="card flex justify-content-center">
-        <InputTextarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          rows={5}
-          cols={30}
-          placeholder="תיאור האירוע"
-        />
-      </div>
-      <br />
-      <Button label="שמור" icon="pi pi-user-plus" className="w-full mt-4" onClick={handleSubmit} />
-    </Card>
+      <Card title="הוספת אירוע" className="w-full max-w-[500px] shadow-3">
+        <Toast ref={toast} position="top-center" />
+        <div className="card flex justify-content-center ">
+          <InputText
+            value={eventName}
+            onChange={(e) => setEventName(e.target.value)}
+            placeholder="שם אירוע"
+          />
+        </div>
+        <br />
+        <div className="card flex justify-content-center">
+          <Calendar value={date} onChange={(e) => setDate(e.value)} placeholder="בחר תאריך" />
+        </div>
+        <br />
+        <div className="card flex justify-content-center">
+          <Calendar
+            value={time}
+            onChange={(e) => setTime(e.value)}
+            timeOnly
+            hourFormat="24"
+            placeholder="בחר שעה"
+          />
+        </div>
+        <br />
+        <div className="card flex justify-content-center">
+          <InputTextarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            rows={5}
+            cols={30}
+            placeholder="תיאור האירוע"
+          />
+        </div>
+        <br />
+        <Button label="שמור" icon="pi pi-user-plus" className="w-full mt-4" onClick={handleSubmit} />
+      </Card>
     </div>
   );
 };

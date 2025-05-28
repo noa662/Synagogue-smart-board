@@ -3,10 +3,10 @@ const { addEvent, deleteEvent, getAllEvents, updateEvent, getEventById } = requi
 const verifyJWT = require("../middleware/verifyJWT")
 const router = express.Router();
 
-router.get("/", getAllEvents);  // שליפת כל האירועים
-router.get("/:id", getEventById);  //שליפת אירוע ספציפי לפי ID
-router.post("/", addEvent);  // יצירת אירוע חדש
-router.put("/:id",verifyJWT, updateEvent);  // עדכון אירוע
-router.delete("/:id",verifyJWT, deleteEvent);  // מחיקת אירוע
+router.get("/", getAllEvents);  
+router.get("/:id", getEventById);  
+router.post("/", addEvent);  
+router.put("/:id", verifyJWT, updateEvent);  
+router.delete("/:id", verifyJWT, deleteEvent);  
 
 module.exports = router;

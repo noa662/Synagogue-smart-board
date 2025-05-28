@@ -4,11 +4,11 @@ const { addUser, deleteUser, getAllUsers, updateUser, getUser, getUserByName } =
 
 const router = express.Router();
 
-router.get("/", getAllUsers);  // שליפת כל המשתמשים 
-router.get("/ByName/:name", getUserByName); // שליפת משתשמש ספציפי לפי שם
-router.get("/:id", getUser);  // שליפת משתמש ספציפי לפי ID
-router.post("/", addUser);  // יצירת משתמש חדש
-router.put("/:id", updateUser);  // עדכון משתמש
-router.delete("/:id",verifyJWT, deleteUser);  // מחיקת משתמש
+router.get("/", getAllUsers); 
+router.get("/ByName/:name", getUserByName); 
+router.get("/:id", getUser);  
+router.post("/", addUser);  
+router.put("/:id", updateUser);  
+router.delete("/:id",verifyJWT, deleteUser); 
 
 module.exports = router;

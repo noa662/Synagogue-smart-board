@@ -1,36 +1,46 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Password } from 'primereact/password';
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { Button } from "primereact/button";
 import { Card } from "primereact/card";
 import { Toast } from "primereact/toast";
-import { useDispatch, useSelector } from 'react-redux';
-import { createUser } from "../Store/UserSlice";
-import { loginUser, getUserByName } from "../Services/userService";
+import { useDispatch } from 'react-redux';
+import { setUser } from "../Store/UserSlice";
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const toast = useRef(null);
-  const user = useSelector((state) => state.user);
-
-  useEffect(() => {
-    if (user) {
-      console.log("המשתמש מהstate:", user);
-    }
-  }, [user]);
+  const navigate = useNavigate();
 
   const handleSubmit = async () => {
-    const userLogin = { username: name, password };
+
+    if (!username || !password) {
+      toast.current.show({
+        severity: 'warn',
+        summary: 'שגיאה',
+        detail: 'אנא מלא את כל השדות',
+        life: 3000
+      });
+      return;
+    }
+
+    setLoading(true);
 
     try {
-      const { token } = await loginUser(userLogin);
-      localStorage.setItem("token", token);
+      const loginResponse = await axios.post("http://localhost:8080/auth/login", {
+        username,
+        password
+      });
 
-      const userData = await getUserByName(userLogin.username, token);
-      dispatch(createUser(userData));
+      const { token, user } = loginResponse.data;
+      localStorage.setItem("token", token);
+      dispatch(setUser(user));
 
       toast.current.show({
         severity: 'success',
@@ -39,16 +49,29 @@ const Login = () => {
         life: 3000
       });
 
-      window.location.href = userData.role === "admin" ? "/admin" : "/";
+      setTimeout(() => {
+        if (user.role === "admin") navigate("/admin");
+        else navigate("/");
+      }, 1000);
 
     } catch (err) {
-      console.error("שגיאה בהתחברות:", err);
+      console.error("Login error:", err);
+
+      let errorMessage = 'שגיאה בהתחברות';
+      if (err.response?.status === 400) {
+        errorMessage = 'שם משתמש או סיסמה שגויים';
+      } else if (err.response?.status === 500) {
+        errorMessage = 'שגיאת שרת, נסה שוב מאוחר יותר';
+      }
+
       toast.current.show({
         severity: 'error',
         summary: 'שגיאה',
-        detail: 'שגיאה בהתחברות',
-        life: 3000
+        detail: errorMessage,
+        life: 4000
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -57,14 +80,14 @@ const Login = () => {
       <Toast ref={toast} />
       <Card title="התחברות" className="w-full max-w-[500px] shadow-4 p-6 border-round-xl">
         <div className="flex flex-column gap-4">
-
           {/* שם משתמש */}
           <FloatLabel>
             <InputText
               id="username"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full"
+              disabled={loading}
             />
             <label htmlFor="username">שם משתמש</label>
           </FloatLabel>
@@ -78,16 +101,19 @@ const Login = () => {
               toggleMask
               feedback={false}
               className="w-full"
+              disabled={loading}
             />
             <label htmlFor="password">סיסמה</label>
           </FloatLabel>
 
           {/* כפתור שליחה */}
           <Button
-            label="התחבר"
+            label={loading ? "... מתחבר" : "התחבר"}
             icon="pi pi-sign-in"
             className="w-full mt-3"
             onClick={handleSubmit}
+            loading={loading}
+            disabled={loading}
           />
         </div>
       </Card>

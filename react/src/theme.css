@@ -1,13 +1,17 @@
 :root {
-  --main-color: #5a67d8; /* סגול עדין ונעים */
-  --accent-color: #3182ce; /* כחול קליל להדגשות */
+  --main-color: #5a67d8;
+  /* סגול עדין ונעים */
+  --accent-color: #3182ce;
+  /* כחול קליל להדגשות */
   --background-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   --font-primary: 'Heebo', sans-serif;
   --font-heading: 'Poppins', sans-serif;
   --font-mono: 'Fira Mono', monospace;
   --main-background: var(--background-gradient);
-  --text-primary: #5e6e8d; /* אפור כהה לקריאה נוחה */
-  --text-secondary: #8c9ebd; /* אפור בינוני לכיתובים משניים */
+  --text-primary: #5e6e8d;
+  /* אפור כהה לקריאה נוחה */
+  --text-secondary: #8c9ebd;
+  /* אפור בינוני לכיתובים משניים */
   --text-inverse: #ffffff;
 }
 
@@ -27,7 +31,12 @@ body {
 
 /* טיפוגרפיה */
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   color: var(--text-primary);
   margin-top: 1rem;
@@ -41,6 +50,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-size: 3rem;
+  color: #ffffff;
 }
 
 h2 {
@@ -94,7 +104,8 @@ span {
 
 .p-button:hover,
 .main-button:hover {
-  background-color: #434190 !important; /* קצת כהה יותר */
+  background-color: #434190 !important;
+  /* קצת כהה יותר */
   transform: scale(1.05);
   box-shadow: 0 6px 12px rgb(90 103 216 / 0.6);
   cursor: pointer;
@@ -139,7 +150,7 @@ span {
   font-family: var(--font-primary);
 }
 
-.p-datatable-thead > tr > th {
+.p-datatable-thead>tr>th {
   background-color: #e0e7ff;
   color: var(--main-color);
   font-weight: 700;
@@ -156,7 +167,7 @@ span {
   color: var(--text-primary);
 }
 
-.p-datatable-striped .p-datatable-tbody > tr:nth-child(odd) {
+.p-datatable-striped .p-datatable-tbody>tr:nth-child(odd) {
   background-color: #f0f4ff;
 }
 

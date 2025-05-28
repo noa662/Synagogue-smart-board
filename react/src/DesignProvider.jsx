@@ -9,13 +9,13 @@ export function DesignProvider({ children }) {
     return savedSettings
       ? JSON.parse(savedSettings)
       : {
-          themeColor: '#6466f1',
-          font: "'Heebo', sans-serif",
-          background: "url('/img/3.jpg')",
-        };
+        themeColor: '#6466f1',
+        font: "'Heebo', sans-serif",
+        background: "url('/img/3.jpg')",
+      };
   });
 
-  // כשיש שינוי ב-settings, שמור גם ב-localStorage ועדכן CSS variables
+  // עידכון ה-localStorage וה-CSS כאשר ההגדרות משתנות
   useEffect(() => {
     if (settings) {
       localStorage.setItem('designSettings', JSON.stringify(settings));

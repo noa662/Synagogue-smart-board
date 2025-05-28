@@ -1,7 +1,5 @@
 const User = require('../models/userModel');
 
-
-
 async function addUser(req, res) {
     console.log("נתונים שהתקבלו ב-body:", req.body);
     try {
@@ -73,7 +71,7 @@ async function getUserByName(req, res) {
 async function getUser(req, res) {
     try {
         const { id } = req.params;
-        const user = await User.findById(id).select({ password: 0 }); // Exclude password from response
+        const user = await User.findById(id).select({ password: 0 }); 
         if (!user)
             return res.status(404).send({ message: "User not found" });
         res.status(200).send(user);

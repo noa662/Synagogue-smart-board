@@ -15,30 +15,42 @@ import AddInquiry from "./Components/AddInquiry";
 import DefaultAdminPage from "./Components/DefaultAdminPage";
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { createUser } from "./Store/UserSlice";
+import { setUser } from "./Store/UserSlice";
 import axios from 'axios';
 
 const App = () => {
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     const fetchUserFromToken = async () => {
       const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const response = await axios.get("http://localhost:8080/auth/getUserFromToken", {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          dispatch(createUser(response.data));
-        } catch (err) {
-          console.error("שגיאה באימות טוקן:", err);
+      if (!token) {
+        console.log("No token found in localStorage");
+        return;
+      }
+      try {
+        console.log("Attempting to verify token...");
+        const response = await axios.get("http://localhost:8080/auth/getUserFromToken", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        console.log("Token verification successful:", response.data);
+        dispatch(setUser(response.data));
+      } catch (err) {
+        console.error("Token verification failed:", err);
+        if (err.response?.status === 401) {
+          console.log("Token expired or invalid, removing from storage");
+          localStorage.removeItem("token");
+        } else if (err.code === 'ERR_NETWORK') {
+          console.log("Network error - server might be down");
         }
       }
     };
 
     fetchUserFromToken();
-  }, []);
+  }, [dispatch]);
 
   return (
     <Routes>
@@ -52,6 +64,7 @@ const App = () => {
         <Route path="addInquiry" element={<AddInquiry />} />
         <Route path="events" element={<Events />} />
       </Route>
+
       {/* תפריט מנהל */}
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<DefaultAdminPage />} />

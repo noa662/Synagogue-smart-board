@@ -23,7 +23,6 @@ const AddInquiry = () => {
     const handleSubmit = async () => {
         const token = localStorage.getItem("token");
         if (!token) {
-            console.error("No token found");
             toast.current.show({
                 severity: 'warn',
                 summary: 'שגיאה',
@@ -33,14 +32,11 @@ const AddInquiry = () => {
             return;
         }
 
-        console.log("user.username:", user?.username);
-
-        if (!user || user.username === "?" || user.username === undefined) {
-            console.log("המשתמש לא מחובר למערכת");
+        if (!user || user.username === "?" || !user.email) {
             toast.current.show({
                 severity: 'warn',
                 summary: 'שגיאה',
-                detail: 'המשתמש לא מחובר למערכת',
+                detail: 'המשתמש או המייל אינם זמינים',
                 life: 3000
             });
             return;
@@ -58,13 +54,14 @@ const AddInquiry = () => {
 
         const inquiry = {
             userName: user.username,
+            userEmail: user.email,
             date: new Date().toISOString(),
             subjectOfInquiry,
             description
         };
 
         try {
-            await fetch("http://localhost:8080/inquiries", {
+            const res = await fetch("http://localhost:8080/inquiries", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,8 +70,10 @@ const AddInquiry = () => {
                 body: JSON.stringify(inquiry),
             });
 
-            console.log("inquiry being sent:", inquiry);
-            console.log("נשמר בהצלחה");
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.error || 'שגיאה בשמירת הפנייה');
+            }
 
             toast.current.show({
                 severity: 'success',
@@ -86,11 +85,10 @@ const AddInquiry = () => {
             setSubjectOfInquiry('');
             setDescription('');
         } catch (err) {
-            console.error("שגיאה בשליחת הפנייה:", err);
             toast.current.show({
                 severity: 'error',
                 summary: 'שגיאה',
-                detail: err.response?.data?.message || 'שליחת הפנייה נכשלה',
+                detail: err.message || 'שליחת הפנייה נכשלה',
                 life: 4000
             });
         }

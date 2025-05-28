@@ -1,14 +1,17 @@
 const Inquiry = require('../models/inquiryModel');
+const sendEmailToUser = require('../utils/sendEmailToUser');
 
 async function addInquiry(req, res) {
     try {
         const newInquiry = new Inquiry(req.body);
         await newInquiry.save();
+        await sendEmailToUser(req.body.userEmail, req.body.userName);
         res.status(201).send({ message: "Inquiry created successfully", Inquiry: newInquiry });
-    } catch (error) {
+    }
+    catch (error) {
         console.error("Error creating inquiry:", error);
         res.status(500).send({ error: error.message });
-    };
+    }
 };
 
 async function deleteInquiry(req, res) {

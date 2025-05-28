@@ -72,34 +72,17 @@ const getPrayerTimesByDate = async (req, res) => {
         const { date } = req.query;
         if (!date)
             return res.status(400).json({ error: "Date parameter is required" });
-
-        // ממיר את המחרוזת שמייצגת את התאריך לפורמט 'YYYY-MM-DD'
-        const formattedDate = new Date(date).toISOString().split("T")[0]; 
-
-        // חיפוש זמני תפילה בתאריך
+        const formattedDate = new Date(date).toISOString().split("T")[0];
         const prayerTimes = await PrayerTime.find({ date: formattedDate });
-        if (!prayerTimes || prayerTimes.length === 0) 
+        if (!prayerTimes || prayerTimes.length === 0)
             return res.status(404).json({ error: "No prayer times found for this date" });
-        
-        res.json(prayerTimes[0]);  // החזרת זמני תפילה מהתוצאה הראשונה
+
+        res.json(prayerTimes[0]);
     } catch (error) {
         console.error("Error fetching prayer time:", error);
         res.status(500).json({ error: "Error fetching prayer times" });
     }
 };
-
-// async function getPrayerTimesByDate(req, res) {
-//     try {
-//         const { date } = req.query;
-//         if (!date)
-//             return res.status(400).send({ error: "Date is required" });
-//         const prayerTimes = await calculateHalachicTimes({ date });
-//         res.status(200).send(prayerTimes);
-//     } catch (error) {
-//         console.error("Error calculating prayer times by date:", error);
-//         res.status(500).send({ error: error.message });
-//     };
-// };
 
 async function getPrayerTimesByLocation(req, res) {
     try {
