@@ -46,12 +46,14 @@ npm start
 Below is an example of environment variables you need to configure.
 Remember not to commit your .env file to public repositories!
 
+```
 DB=mongodb+srv://<username>:<password>@cluster.mongodb.net/
 PORT=8080
 ADMIN_PASSWORD=your_admin_password
 JWT_SECRET=your_jwt_secret_key
 EMAIL_USER=your_email@gmail.com
 EMAIL_PASS=your_email_password_or_app_password
+```
 
 ### Screenshots
 
