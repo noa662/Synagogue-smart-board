@@ -1,7 +1,0 @@
-{
-  "dependencies": {
-    "primeicons": "^7.0.0",
-    "primereact": "^10.9.4",
-    "tailwindcss": "^4.1.4"
-  }
-}
